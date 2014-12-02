@@ -1,0 +1,79 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.braunster.tutorialview.TutorialView
+        android:layout_width="match_parent"
+        android:id="@+id/tutorial_view"
+        android:layout_height="match_parent"/>
+
+    <TextView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:textSize="30sp"
+        android:background="@android:color/holo_orange_dark"
+        android:id="@+id/view_to_surround"
+        android:gravity="center"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="50dp"
+        android:text="T"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:id="@+id/linear_test">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:background="@android:color/holo_orange_dark"
+            android:gravity="center"
+            android:padding="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="Taaaa"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:padding="10dp"
+            android:background="@android:color/holo_orange_dark"
+            android:gravity="center"
+            android:text="Tsssss"/>
+
+        </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:background="@android:color/darker_gray"
+        android:padding="5dp"
+        android:id="@+id/view_to_surround2"
+        android:gravity="center"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="Test2"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BTN"
+        android:background="@android:color/holo_green_dark"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/btn_test_button"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Just a button2"
+        android:background="@android:color/holo_blue_dark"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="50dp"
+        android:id="@+id/btn_test_button2"/>
+</RelativeLayout>
