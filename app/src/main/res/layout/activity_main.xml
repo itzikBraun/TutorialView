@@ -1,5 +1,7 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
@@ -12,10 +14,12 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:textSize="30sp"
-        android:background="@android:color/holo_orange_dark"
+
+        android:background="@drawable/circle_button"
         android:id="@+id/view_to_surround"
         android:gravity="center"
         android:layout_marginLeft="100dp"
+        android:textColor="@android:color/white"
         android:layout_marginTop="50dp"
         android:text="T"/>
 
@@ -35,7 +39,7 @@
             android:gravity="center"
             android:padding="5dp"
             android:layout_marginBottom="5dp"
-            android:text="Taaaa"/>
+            android:text="Test"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -44,36 +48,40 @@
             android:padding="10dp"
             android:background="@android:color/holo_orange_dark"
             android:gravity="center"
-            android:text="Tsssss"/>
+            android:text="Center"/>
 
-        </LinearLayout>
+    </LinearLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="30sp"
-        android:background="@android:color/darker_gray"
+        android:layout_margin="5dp"
+        android:background="@android:color/holo_purple"
         android:padding="5dp"
         android:id="@+id/view_to_surround2"
         android:gravity="center"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:text="Test2"/>
+        android:text="T-TL"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="BTN"
+        android:text="T-BL"
         android:background="@android:color/holo_green_dark"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="20dp"
+        android:layout_margin="5dp"
         android:id="@+id/btn_test_button"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Just a button2"
+        android:text="T-Right"
         android:background="@android:color/holo_blue_dark"
         android:layout_alignParentRight="true"
         android:layout_marginTop="50dp"
         android:id="@+id/btn_test_button2"/>
+
 </RelativeLayout>

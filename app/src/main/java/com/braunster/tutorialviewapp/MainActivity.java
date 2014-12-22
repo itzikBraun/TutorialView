@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.braunster.tutorialview.TutorialActivity;
@@ -41,9 +40,13 @@ public class MainActivity extends Activity {
             getActionBar().setBackgroundDrawable(new ColorDrawable(Color.DKGRAY));
 
         tutorialView.setActionBarRestoreColor(Color.DKGRAY);
-        tutorialView.setTutorialBackgroundColor(Color.CYAN);
         tutorialView.changeActionBarColor(true);
         tutorialView.setActionBar(getActionBar());
+        tutorialView.setHasActionBar(true);
+        tutorialView.setTutorialTextTypeFace("fonts/roboto_light.ttf");
+        tutorialView.setHasStatusBar(true);
+        //Using the tutorial view
+        tutorialView.setTutorialText("This is some general text that is not that long but also not so short.");
     }
 
     @Override
@@ -53,28 +56,25 @@ public class MainActivity extends Activity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        return super.onOptionsItemSelected(item);
-    }
-
     private View.OnClickListener tutorialClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
-            //Using the tutorial view
-            /*tutorialView.setViewToSurround(v, v instanceof TextView ? ((TextView) v).getText().toString() : "Fixed Title");
-            tutorialView.setTutorialText("This is some general text that is not that long but also not so short.");
-            tutorialView.setHasStatusBar(true);
-            tutorialView.setHasActionBar(true);*/
+            // This is used for the tutorial view that should be in your root view.
+            // This may lead to problems when used inside LinearLayout and maybe other view.
+            // The best thing to do is to use the TutorialActivity.
+
+            // Set the background color.
+//            tutorialView.setTutorialBackgroundColor(randomColor());
+
+            // Setting the view that should be surrounded.
+//            tutorialView.setViewToSurround(v, v instanceof TextView ? ((TextView) v).getText().toString() : "Fixed Title");
 
             // Using the tutorial Activity
             startActivity(TutorialActivity.getIntent(MainActivity.this, v, true, "This is some general text that is not that long but also not so short.", randomColor()));
+
+            // Override the default animation of the entering activity.
+            // This will allow the nice wrapping of the view by the tutorial activity.
             overridePendingTransition(R.anim.dummy, R.anim.dummy);
         }
     };
@@ -82,5 +82,13 @@ public class MainActivity extends Activity {
     private int randomColor(){
         Random rnd = new Random();
         return  Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (tutorialView.isShowing())
+            tutorialView.closeTutorial();
+        else
+            super.onBackPressed();
     }
 }

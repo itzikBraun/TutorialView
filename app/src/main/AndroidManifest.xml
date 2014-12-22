@@ -20,6 +20,9 @@
         <activity android:name="com.braunster.tutorialview.TutorialActivity"
             android:theme="@style/TutorialActivityTheme"/>
 
+        <activity android:name="com.braunster.tutorialview.TutorialActivity"
+            android:theme="@style/TutorialActivityTheme"/>
+
     </application>
 
 </manifest>
