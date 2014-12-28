@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:text="@string/got_it_button_text"
+    android:text="Title"
     android:padding="10dp"
-    android:textSize="33sp"
-    android:id="@+id/got_it_button_view"
-    android:fontFamily="sans-serif-condensed"
+    android:textSize="40sp"
+    android:id="@+id/title_view"
+    android:fontFamily="sans-serif-light"
     android:textColor="@android:color/white"
     android:layout_height="wrap_content"/>

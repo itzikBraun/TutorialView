@@ -12,7 +12,7 @@
 //import android.view.animation.AnimationUtils;
 //import android.view.animation.Transformation;
 //
-//import com.braunster.tutorialview.AbstractTutorialView;
+//import com.braunster.tutorialview.view.AbstractTutorialView;
 //import com.braunster.tutorialview.R;
 //
 ///**

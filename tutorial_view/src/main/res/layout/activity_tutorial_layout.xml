@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.braunster.tutorialview.TutorialLayout
+    <com.braunster.tutorialview.view.TutorialLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/tutorial_layout"/>

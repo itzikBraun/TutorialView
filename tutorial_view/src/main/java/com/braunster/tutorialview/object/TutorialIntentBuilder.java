@@ -1,12 +1,23 @@
-package com.braunster.tutorialview;
+package com.braunster.tutorialview.object;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
+
+import com.braunster.tutorialview.TutorialActivity;
+import com.braunster.tutorialview.TutorialInterface;
+import com.braunster.tutorialview.WalkThroughInterface;
+import com.braunster.tutorialview.view.AbstractTutorialView;
+
+import java.util.ArrayList;
 
 /**
  * Created by braunster on 04/12/14.
  */
 public class TutorialIntentBuilder {
+
+    public static final String TAG = TutorialIntentBuilder.class.getSimpleName();
+    public static final boolean DEBUG = true;
 
     // View location, width and height.
     private static final String
@@ -26,12 +37,21 @@ public class TutorialIntentBuilder {
     private static final String TUTORIAL_TEXT_COLOR = "tutorial_default_text_color";
     private static final String TUTORIAL_TEXT_SIZE = "tutorial_default_text_size";
 
+    private static String TUTORIAL_ANIMATION_DURATION = "tutorial_animation_duration";
     private static final String TUTORIAL_ANIMATION = "tutorial_animation";
+
+    private static final String WALK_THROUGH_DATA = "walk_through_data";
+
+    private static final String SKIP_TUTORIAL_ON_BACK_PRESSED = "skip_tutorial_on_back_pressed";
 
     private Intent intent;
 
     public TutorialIntentBuilder(Context context){
         intent = new Intent(context, TutorialActivity.class );
+    }
+
+    public TutorialIntentBuilder(Intent intent){
+        this.intent = intent;
     }
 
     public TutorialIntentBuilder setX(int x){
@@ -89,11 +109,50 @@ public class TutorialIntentBuilder {
         return this;
     }
 
+    public TutorialIntentBuilder setAnimationDuration(long duration){
+        intent.putExtra(TUTORIAL_ANIMATION_DURATION, duration);
+        return this;
+    }
+
+    public TutorialIntentBuilder setWalkThroughList(ArrayList<Tutorial> tutorials){
+        if (tutorials != null && tutorials.size() > 0)
+        {
+            intent.putParcelableArrayListExtra(WALK_THROUGH_DATA, tutorials);
+        }
+
+        return this;
+    }
+
+    /**
+     * @param skip if true the {@link com.braunster.tutorialview.TutorialActivity TutorialActivity} will skip the tutorial
+     * on back pressed.
+     *
+     * @see com.braunster.tutorialview.view.TutorialLayout#skip()
+     * */
+    public TutorialIntentBuilder skipTutorialOnBackPressed(boolean skip){
+        intent.putExtra(SKIP_TUTORIAL_ON_BACK_PRESSED, skip);
+        return this;
+    }
+
     public Intent getIntent(){
         return intent;
     }
 
     public static void showTutorial(TutorialInterface tutorial, Intent intent){
+
+        // Showing the first tutorial in the list.
+        if (tutorial instanceof WalkThroughInterface)
+        {
+            if (DEBUG) Log.d(TAG, "WalkThroughInterface");
+
+            if (intent.getExtras().containsKey(WALK_THROUGH_DATA))
+            {
+                ((WalkThroughInterface) tutorial).startWalkThrough();
+                return;
+            }
+            else if (DEBUG) Log.d(TAG, "ShowTutorial, WalkThroughDoesNot have walk through data.");
+        }
+
         final int x = intent.getIntExtra(VIEW_TO_SURROUND_X, -1);
         final int y = intent.getIntExtra(VIEW_TO_SURROUND_Y, -1);
         final int width = intent.getIntExtra(VIEW_TO_SURROUND_WIDTH, -1);
@@ -131,6 +190,15 @@ public class TutorialIntentBuilder {
             tutorial.setAnimationType(AbstractTutorialView.AnimationType.values()[intent.getExtras().getInt(TUTORIAL_ANIMATION)]);
 
         tutorial.setTutorialInfoLayoutId(tutorialLayoutId);
+
+        tutorial.setAnimationDuration(intent.getLongExtra(TUTORIAL_ANIMATION_DURATION, -1));
+
+        if (tutorial instanceof WalkThroughInterface)
+            ((WalkThroughInterface) tutorial).setWalkThroughData(intent.<Tutorial>getParcelableArrayListExtra(WALK_THROUGH_DATA));
+    }
+
+    public static boolean skipOnBackPressed(Intent intent){
+        return intent.getBooleanExtra(SKIP_TUTORIAL_ON_BACK_PRESSED, false);
     }
 
     public TutorialIntentBuilder setAnimationType(int animationType){

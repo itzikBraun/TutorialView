@@ -1,15 +1,18 @@
 package com.braunster.tutorialviewapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
-import com.braunster.tutorialview.TutorialActivity;
-import com.braunster.tutorialview.TutorialView;
+import com.braunster.tutorialview.object.Tutorial;
+import com.braunster.tutorialview.object.TutorialIntentBuilder;
+import com.braunster.tutorialview.view.TutorialView;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -56,6 +59,17 @@ public class MainActivity extends Activity {
         return true;
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        if (hasFocus)
+        {
+
+        }
+    }
+
+
     private View.OnClickListener tutorialClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -70,8 +84,14 @@ public class MainActivity extends Activity {
             // Setting the view that should be surrounded.
 //            tutorialView.setViewToSurround(v, v instanceof TextView ? ((TextView) v).getText().toString() : "Fixed Title");
 
-            // Using the tutorial Activity
-            startActivity(TutorialActivity.getIntent(MainActivity.this, v, true, "This is some general text that is not that long but also not so short.", randomColor()));
+           /* int color =  randomColor();
+
+            // Using the tutorial Activity for simple tutorial.
+            Intent intent = TutorialActivity.getIntent(MainActivity.this, v, true, "This is some general text that is not that long but also not so short.",color);
+            startActivity(intent);*/
+
+            // Using the tutorial activity as a walk through
+            startActivity(walkThroughIntent());
 
             // Override the default animation of the entering activity.
             // This will allow the nice wrapping of the view by the tutorial activity.
@@ -90,5 +110,38 @@ public class MainActivity extends Activity {
             tutorialView.closeTutorial();
         else
             super.onBackPressed();
+    }
+
+    private Intent walkThroughIntent(){
+
+        TutorialIntentBuilder builder = new TutorialIntentBuilder(this);
+
+        Tutorial tutorial = new Tutorial(findViewById(R.id.view_to_surround2), "Top Left");
+        tutorial.setInfoText("This view is on the top left");
+        tutorial.setBackgroundColor(Color.BLACK);
+
+        Tutorial tutorial2 = new Tutorial(findViewById(R.id.btn_test_button), "Bottom Left");
+        tutorial2 .setInfoText("This view is on the bottom left");
+        tutorial2.setBackgroundColor(Color.BLUE);
+
+        Tutorial tutorial3 = new Tutorial(findViewById(R.id.btn_test_button2), "Right");
+        tutorial3.setInfoText("this view is on the right");
+        tutorial3.setBackgroundColor(Color.RED);
+
+        Tutorial tutorial4 = new Tutorial(findViewById(R.id.linear_test));
+        tutorial4.setInfoText("This is a centered view");
+        tutorial4.setBackgroundColor(Color.GREEN);
+
+        ArrayList<Tutorial> tutorials = new ArrayList<>();
+        tutorials.add(tutorial);
+        tutorials.add(tutorial2);
+        tutorials.add(tutorial3);
+        tutorials.add(tutorial4);
+
+        builder.skipTutorialOnBackPressed(true);
+
+        builder.setWalkThroughList(tutorials);
+
+        return builder.getIntent();
     }
 }

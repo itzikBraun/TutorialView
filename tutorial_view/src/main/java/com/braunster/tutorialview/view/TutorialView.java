@@ -1,16 +1,14 @@
-package com.braunster.tutorialview;
+package com.braunster.tutorialview.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.Transformation;
 
 /**
@@ -55,22 +53,12 @@ public class TutorialView extends AbstractTutorialView {
 
         if (DEBUG) Log.d(TAG, "onDraw, Height: " + getMeasuredHeight());
 
-        // No need to draw if does not have any view to surround,
-        // Or the view size is null (in case we do not use a view but only its coordinates).
-        if (mViewToSurround == null && mViewToSurroundHeight == -1 && mViewToSurroundWidth == -1)
-            return;
-
         mLeftArcPath.reset();
         mRightArcPath.reset();
 
         // This check for former height is needed so we wont draw anything until the view size is changed and ready for the animation.
-        if (showing &&
-                ( mBeforeAnimationHeight != getMeasuredHeight() ||
-                        (mAnimationType == AnimationType.FROM_LEFT || mAnimationType == AnimationType.FROM_RIGHT) ))
+        if (shouldDraw())
         {
-
-//            if (DEBUG) Log.d(TAG, "Actual Drawing");
-
             // The size of the view before the animation
             mBeforeAnimationHeight = -1;
 
@@ -86,10 +74,6 @@ public class TutorialView extends AbstractTutorialView {
     public  void beforeFirstDraw(){
         if (DEBUG) Log.d(TAG, "FirstDraw");
 
-        // Bringing the surrounding view to front so it will be visible.
-        if (mViewToSurround != null)
-            mViewToSurround.bringToFront();
-
         mBeforeAnimationHeight = ((View) getParent()).getMeasuredHeight();
 
         // To make sure the child order is ok.
@@ -100,17 +84,6 @@ public class TutorialView extends AbstractTutorialView {
         setVisibility(INVISIBLE);
 
         removeAllRules((LayoutParams) getLayoutParams());
-
-        expand(new Runnable() {
-            @Override
-            public void run() {
-                // Only if the tutorial is still showing.
-                if (showing) {
-                    inflateTutorialInfo();
-                    setClickable(true);
-                }
-            }
-        });
     }
 
     @Override
@@ -126,55 +99,14 @@ public class TutorialView extends AbstractTutorialView {
         setClickable(false);
 
         // Animating the views out
-        if (mTutorialInfoView != null && mGotItButton != null)
-        {
+        removeTutorialInfo();
 
-            Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.tutorial_info_view_fade_out);
-            mTutorialInfoView.setAnimation(animation);
-            mGotItButton.setAnimation(animation);
-            animation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    // Removing the info
-                    removeView(mTutorialInfoView);
-                    mTutorialInfoView = null;
-
-                    // Removing the "got it" button
-                    removeView(mGotItButton);
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-
-            animation.start();
-        }
-
-        collapse(new Runnable() {
+        hide(new Runnable() {
             @Override
             public void run() {
                 if (DEBUG) Log.d(TAG, "onEnd Collapse");
 
-                if (mActionBar != null)
-                {
-                    mViewToSurround = null;
-
-                    mViewToSurroundHeight = -1;
-                    mViewToSurroundWidth = -1;
-
-                    if (mChangeActionBarColor)
-                        mActionBar.setBackgroundDrawable(new ColorDrawable(mActionBarRestoreColor));
-
-                    if (mActionBarOldTitle != null && !mActionBarOldTitle.isEmpty())
-                        mActionBar.setTitle(mActionBarOldTitle);
-                }
+                restoreActionBar();
 
                 closing = false;
 
@@ -284,20 +216,11 @@ public class TutorialView extends AbstractTutorialView {
         /**
          *  Drawing two semi transparent circles so the view would look better.
          * */
-        mInnerCirclePaint.setAlpha(INNER_CIRCLE_DEFAULT_ALPHA);
-        canvas.drawCircle(mViewToSurroundCenterX,
-                mViewToSurroundCenterY - statusBarHeight - actionBarHeight,
-                mViewToSurroundRadius - mInnerCirclePaint.getStrokeWidth() / 2,
-                mInnerCirclePaint);
-
-        mInnerCirclePaint.setAlpha(INNER_CIRCLE_DEFAULT_ALPHA/2);
-        canvas.drawCircle(mViewToSurroundCenterX,
-                mViewToSurroundCenterY - statusBarHeight - actionBarHeight,
-                mViewToSurroundRadius - mInnerCirclePaint.getStrokeWidth() - mInnerCirclePaint.getStrokeWidth() / 2,
-                mInnerCirclePaint);
+        drawInnerCircles(canvas);
     }
 
-    public Animation expand(final Runnable onEnd) {
+    @Override
+    public Animation show(final Runnable onEnd) {
         if (DEBUG) Log.v(TAG, "expand");
 
         final int initialHeight = ((View) getParent()).getMeasuredHeight();
@@ -358,13 +281,14 @@ public class TutorialView extends AbstractTutorialView {
             }
         });
 
-        a.setDuration(DEFAULT_ANIM_DURATION);
+        a.setDuration(getAnimationDuration());
         startAnimation(a);
 
         return a;
     }
 
-    public Animation collapse(final Runnable onEnd) {
+    @Override
+    public Animation hide(final Runnable onEnd) {
 
         final int initialHeight = ((View) getParent()).getMeasuredHeight();
         final int initialWidth = ((View) getParent()).getMeasuredWidth();
@@ -421,9 +345,16 @@ public class TutorialView extends AbstractTutorialView {
 
             }
         });
-        a.setDuration(DEFAULT_ANIM_DURATION);
+        a.setDuration(getAnimationDuration());
         startAnimation(a);
         return a;
+    }
+
+    @Override
+    protected boolean shouldDraw() {
+        return super.shouldDraw() && showing &&
+                ( mBeforeAnimationHeight != getMeasuredHeight() ||
+                        (mAnimationType == AnimationType.FROM_LEFT || mAnimationType == AnimationType.FROM_RIGHT) );
     }
 
     /**
