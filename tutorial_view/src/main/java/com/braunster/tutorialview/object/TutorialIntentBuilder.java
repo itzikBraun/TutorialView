@@ -2,6 +2,7 @@ package com.braunster.tutorialview.object;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.braunster.tutorialview.TutorialActivity;
@@ -10,6 +11,7 @@ import com.braunster.tutorialview.WalkThroughInterface;
 import com.braunster.tutorialview.view.AbstractTutorialView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by braunster on 04/12/14.
@@ -118,6 +120,15 @@ public class TutorialIntentBuilder {
         if (tutorials != null && tutorials.size() > 0)
         {
             intent.putParcelableArrayListExtra(WALK_THROUGH_DATA, tutorials);
+        }
+
+        return this;
+    }
+
+    public TutorialIntentBuilder setWalkThroughList(Tutorial... tutorials){
+        if (tutorials != null && tutorials.length > 0)
+        {
+            intent.putParcelableArrayListExtra(WALK_THROUGH_DATA, new ArrayList<Parcelable>(Arrays.asList(tutorials)));
         }
 
         return this;

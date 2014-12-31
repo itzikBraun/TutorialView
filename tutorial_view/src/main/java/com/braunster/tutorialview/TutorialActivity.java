@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.braunster.tutorialview.object.Tutorial;
 import com.braunster.tutorialview.object.TutorialIntentBuilder;
@@ -76,7 +75,7 @@ public class TutorialActivity extends Activity {
 
                                 @Override
                                 public void onWalkTroughSkipped() {
-                                    Toast.makeText(TutorialActivity.this, "Walk through was skipped.", Toast.LENGTH_LONG).show();
+//                                    Toast.makeText(TutorialActivity.this, "Walk through was skipped.", Toast.LENGTH_LONG).show();
                                     finish();
                                 }
 
