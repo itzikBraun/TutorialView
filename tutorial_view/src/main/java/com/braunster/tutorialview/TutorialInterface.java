@@ -3,6 +3,7 @@ package com.braunster.tutorialview;
 import android.app.ActionBar;
 import android.view.View;
 
+import com.braunster.tutorialview.object.Tutorial;
 import com.braunster.tutorialview.view.AbstractTutorialView;
 
 /**
@@ -47,6 +48,20 @@ public interface TutorialInterface {
      *  */
     public void setPositionToSurround(float positionToSurroundX, float positionToSurroundY, int positionToSurroundWidth, int positionToSurroundHeight, String title);
 
+    /**
+     * Set the tutorial data for this view and animate it into the screen if wanted.
+     *
+     * @param tutorial The tutorial object that hold all the tutorial data.
+     * @param show pass true if you want the tutorial to be shown.
+     * */
+    public void setTutorial(Tutorial tutorial, boolean show);
+
+    /**
+     * Set the tutorial data for this view and animate it into the screen.
+     *
+     * @param tutorial The tutorial object that hold all the tutorial data.
+     * */
+    public void setTutorial(Tutorial tutorial);
 
     /**
      * The Layout id of the view that will be used to show the tutorial text or information.
@@ -159,4 +174,10 @@ public interface TutorialInterface {
      *  @return true if the view is in walk through mode.
      * */
     public boolean isWalkThrough();
+
+
+    public void show();
+
+    public void hide();
+
 }

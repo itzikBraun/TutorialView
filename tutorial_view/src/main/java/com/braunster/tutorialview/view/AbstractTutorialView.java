@@ -30,10 +30,12 @@ import java.util.Random;
  */
 public abstract class AbstractTutorialView extends RelativeLayout implements TutorialInterface {
 
-    // FIXME debug draw is overlayd by the regular draw
-    protected static final boolean DEBUG_DRAW = true;
+    protected static final boolean DEBUG_DRAW = false;
+
     public static final String TAG = AbstractTutorialView.class.getSimpleName();
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
+
+    protected static final int DEFAULT_BACKGROUND_COLOR = Color.BLUE;
 
     protected static final int DEFAULT_PRECAUTION_ABOVE_DISTANCE = 5, DEFAULT_CIRCLE_PADDING = 40, INNER_CIRCLE_DEFAULT_ALPHA = 140, DEFAULT_STROKE_WIDTH = 13;
 
@@ -76,22 +78,12 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
      **/
     protected boolean closing = false;
 
-    /**
-     * The layout id that will be used to inflate the tutorial info view.
-     * */
-    protected int mTutorialInfoLayoutId = -1;
-
     protected ActionBar mActionBar;
 
     /**
      * If true when the tutorial view will be visible the action bar color will be change to the tutorial background color
      * */
     protected boolean mChangeActionBarColor = false;
-
-    /**
-     *  The background color of the tutorial view
-     * */
-    protected int mTutorialBackgroundColor = Color.BLUE;
 
     /**
      * The default color of the action bar,
@@ -107,26 +99,6 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
     protected String mActionBarOldTitle = "";
 
     /**
-     * Holds the size of the default info view text view.
-     * */
-    protected int mTutorialTextSize = -1;
-
-    /**
-     * Holds the text that will be shown in the default info view
-     * */
-    protected String mTutorialText = "";
-
-    /**
-     * Holds the color for the default info view text view.
-     * */
-    protected int mTutorialTextColor = Color.WHITE;
-
-    /**
-     * Holds the name of the typeface that will be used for the default info view text view
-     * */
-    protected Typeface mTutorialTextTypeFace = null;
-
-    /**
      * Listener for the tutorial closing.
      * */
     protected TutorialClosedListener tutorialClosedListener;
@@ -136,18 +108,6 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
      * This is used for DEBUG_DRAW and for creating the arcs surrounding the view.
      * */
     protected RectF mViewBoundsInParent;
-
-    /**
-     * Holds the animation duration that will be used to animate the tutorial in and out.
-     *
-     * Id does not assigned it will be ignored and {@link #DEFAULT_ANIM_DURATION } will be used.
-     * */
-    protected long animationDuration =-1;
-
-    /**
-     * Holds the animation type value that will be preformed on opening and closing the tutorial.
-     * */
-    protected AnimationType mAnimationType = AnimationType.RANDOM;
 
     /**
      * Animation type that are supported by the tutorial view.
@@ -208,14 +168,17 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
 
 
     private void init(){
+
+        mTutorial = new Tutorial();
+
         setWillNotDraw(false);
 
         mBackgroundPaint = new Paint();
-        mBackgroundPaint.setColor(mTutorialBackgroundColor);
+        mBackgroundPaint.setColor(DEFAULT_BACKGROUND_COLOR);
         mBackgroundPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
         mInnerCirclePaint = new Paint();
-        mInnerCirclePaint.setColor(mTutorialBackgroundColor);
+        mInnerCirclePaint.setColor(DEFAULT_BACKGROUND_COLOR);
         mInnerCirclePaint.setStyle(Paint.Style.STROKE);
         mInnerCirclePaint.setAlpha(INNER_CIRCLE_DEFAULT_ALPHA);
         mInnerCirclePaint.setStrokeWidth(DEFAULT_STROKE_WIDTH);
@@ -246,7 +209,7 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
     public void setViewToSurround(View mViewToSurround, String title) {
         mTutorial = new Tutorial(mViewToSurround, title);
 
-        setTutorial(mTutorial, title);
+        setTutorial(mTutorial);
 
         // Moving the tutorial to the front so no other view will be visible
         bringToFront();
@@ -280,21 +243,23 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
     public void setPositionToSurround(float positionToSurroundX, float positionToSurroundY, int positionToSurroundWidth, int positionToSurroundHeight, String title){
         mTutorial = new Tutorial(title, positionToSurroundX, positionToSurroundY, positionToSurroundWidth, positionToSurroundHeight);
 
-        setTutorial(mTutorial, title);
+        setTutorial(mTutorial);
     }
 
-    public void setTutorial(Tutorial tutorial, String title){
+     @Override
+     public void setTutorial(Tutorial tutorial){
+        setTutorial(tutorial, true);
+    }
+
+    @Override
+    public void setTutorial(Tutorial tutorial, boolean show){
         if (showing)
             return;
-
 
         this.mTutorial = tutorial;
 
         // Using the given title if not empty else we use the one in the tutorial object.
-        initActionBar(title == null || title.isEmpty() ? tutorial.getTitle() : title);
-
-        if (tutorial.getInfoText() != null && !tutorial.getInfoText().isEmpty())
-            mTutorialText = tutorial.getInfoText();
+        initActionBar(mTutorial.getTitle() == null || mTutorial.getTitle().isEmpty() ? tutorial.getTitle() : mTutorial.getTitle());
 
         if (tutorial.getBackgroundColor() != Color.TRANSPARENT)
             setTutorialBackgroundColor(tutorial.getBackgroundColor());
@@ -303,16 +268,8 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
 
         beforeFirstDraw();
 
-        show(new Runnable() {
-            @Override
-            public void run() {
-                // Only if the tutorial is still showing.
-                if (showing) {
-                    inflateTutorialInfo();
-                    setClickable(true);
-                }
-            }
-        });
+        if (show)
+            show();
     }
 
     @Override
@@ -321,26 +278,11 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
 
         if (isInEditMode())
             return;
-
+/*
         // No need to draw if does not have any view to surround,
         // Or the view size is null (in case we do not use a view but only its coordinates).
         if ( !showing || (mTutorial != null && mTutorial.getPositionToSurroundHeight() == -1 && mTutorial.getPositionToSurroundWidth() == -1) )
-            return;
-
-        /*if (DEBUG_DRAW)
-        {
-            canvas.drawCircle(mViewToSurroundCenterX, mViewToSurroundCenterY - actionBarHeight - statusBarHeight, 5 * getResources().getDisplayMetrics().density, debugPaint);
-
-            // The rectCorners.
-            //TOP - LEFT
-            canvas.drawCircle(mViewBoundsInParent.left, mViewBoundsInParent.top, 5 * getResources().getDisplayMetrics().density, debugPaint);
-            // TOP - RIGHT
-            canvas.drawCircle(mViewBoundsInParent.right, mViewBoundsInParent.top, 5 * getResources().getDisplayMetrics().density, debugPaint);
-            // BOTTOM - LEFT
-            canvas.drawCircle(mViewBoundsInParent.left, mViewBoundsInParent.bottom, 5 * getResources().getDisplayMetrics().density, debugPaint);
-            // BOTTOM - RIGHT
-            canvas.drawCircle(mViewBoundsInParent.right, mViewBoundsInParent.bottom, 5 * getResources().getDisplayMetrics().density, debugPaint);
-        }*/
+            return;*/
     }
 
     /**
@@ -386,19 +328,19 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
 
         // Inflating the "Got It" button.
         mGotItButton = inflate(getContext(), R.layout.got_it_button_view, null);
-        ((TextView) mGotItButton).setTextColor(mTutorialTextColor);
+        ((TextView) mGotItButton).setTextColor(mTutorial.getTutorialTextColor());
 
         if (isWalkThrough())
         {
             // Inflating the "Skip" button.
             mSkipButton = inflate(getContext(), R.layout.skip_button_view, null);
-            ((TextView) mSkipButton).setTextColor(mTutorialTextColor);
+            ((TextView) mSkipButton).setTextColor(mTutorial.getTutorialTextColor());
         }
 
         if (mTutorial.getTitle() != null && !mTutorial.getTitle().isEmpty())
         {
             mTitleView = inflate(getContext(), R.layout.title_view, null);
-            ((TextView) mTitleView).setTextColor(mTutorialTextColor);
+            ((TextView) mTitleView).setTextColor(mTutorial.getTutorialTextColor());
             ((TextView) mTitleView).setText(mTutorial.getTitle());
         }
 
@@ -411,28 +353,28 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
      * */
     private void checkTutorialDefault(){
         // If no info was assigned we use the default
-        if (mTutorialInfoLayoutId == -1)
+        if (mTutorial.getTutorialInfoLayoutId() == -1)
         {
-            mTutorialInfoLayoutId = R.layout.tutorial_text;
+            mTutorial.setTutorialInfoLayoutId(R.layout.tutorial_text);
         }
 
-        mTutorialInfoView = inflate(getContext(), mTutorialInfoLayoutId, null);
+        mTutorialInfoView = inflate(getContext(), mTutorial.getTutorialInfoLayoutId(), null);
 
         // When the default view is used it should be combined with the tutorial text variable.
-        if (mTutorialInfoLayoutId == R.layout.tutorial_text)
+        if (mTutorial.getTutorialInfoLayoutId() == R.layout.tutorial_text)
         {
             TextView txtTutorial = ((TextView) mTutorialInfoView.findViewById(R.id.tutorial_info_text));
-            txtTutorial.setText(mTutorialText);
+            txtTutorial.setText(mTutorial.getInfoText());
 
-            if (mTutorialTextSize != -1)
-                txtTutorial.setTextSize(mTutorialTextSize);
+            if (mTutorial.getTutorialTextSize() != -1)
+                txtTutorial.setTextSize(mTutorial.getTutorialTextSize());
 
-            txtTutorial.setTextColor(mTutorialTextColor);
+            txtTutorial.setTextColor(mTutorial.getTutorialTextColor());
 
 
-            if (mTutorialTextTypeFace != null)
+            if (mTutorial.getTutorialTextTypeFace() != null)
             {
-                txtTutorial.setTypeface(mTutorialTextTypeFace);
+                txtTutorial.setTypeface(mTutorial.getTutorialTextTypeFace());
             }
         }
     }
@@ -493,7 +435,7 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
         if (mActionBar != null)
         {
             if (mChangeActionBarColor)
-                mActionBar.setBackgroundDrawable(new ColorDrawable(mTutorialBackgroundColor));
+                mActionBar.setBackgroundDrawable(new ColorDrawable(mTutorial.getBackgroundColor()));
 
             if (title != null && !title.isEmpty())
             {
@@ -574,7 +516,7 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
      * */
     @Override
     public void setTutorialInfoLayoutId(int tutorialInfoLayoutId) {
-        this.mTutorialInfoLayoutId = tutorialInfoLayoutId;
+        this.mTutorial.setTutorialInfoLayoutId(tutorialInfoLayoutId);
     }
 
     @Override
@@ -592,7 +534,7 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
      * */
     @Override
     public void setTutorialBackgroundColor(int mTutorialBackgroundColor) {
-        this.mTutorialBackgroundColor = mTutorialBackgroundColor;
+        mTutorial.setBackgroundColor(mTutorialBackgroundColor);
         mBackgroundPaint.setColor(mTutorialBackgroundColor);
         mInnerCirclePaint.setColor(mTutorialBackgroundColor);
     }
@@ -657,7 +599,7 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
      * */
     @Override
     public void setTutorialText(String tutorialText) {
-        this.mTutorialText = tutorialText;
+        this.mTutorial.setInfoText(tutorialText);
     }
 
     private int getActionBarHeight(){
@@ -682,7 +624,7 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
      * */
     @Override
     public void setTutorialTextSize(int mTutorialTextSize) {
-        this.mTutorialTextSize = mTutorialTextSize;
+        this.mTutorial.setTutorialTextSize(mTutorialTextSize);
     }
 
     /**
@@ -697,7 +639,7 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
      * */
     @Override
     public void setTutorialTextColor(int mTutorialTextColor) {
-        this.mTutorialTextColor = mTutorialTextColor;
+        this.mTutorial.setTutorialTextColor(mTutorialTextColor);
     }
 
     @Override
@@ -706,7 +648,7 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
         if (tutorialTextTypeFaceName.isEmpty())
             return;
 
-        this.mTutorialTextTypeFace = Typeface.createFromAsset(getResources().getAssets(), tutorialTextTypeFaceName);
+        this.mTutorial.setTutorialTextTypeFace(Typeface.createFromAsset(getResources().getAssets(), tutorialTextTypeFaceName));
     }
 
     @Override
@@ -716,24 +658,16 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
 
     @Override
     public void setAnimationType(AnimationType mAnimationType) {
-        this.mAnimationType = mAnimationType;
+        this.mTutorial.setAnimationType(mAnimationType);
     }
 
     @Override
     public void setAnimationDuration(long animationDuration) {
-        this.animationDuration = animationDuration;
+        this.mTutorial.setAnimationDuration(animationDuration);
     }
 
     public long getAnimationDuration() {
-        return animationDuration == -1 ? DEFAULT_ANIM_DURATION : animationDuration;
-    }
-
-    protected int getParentWidth(){
-        return ((View) getParent()).getMeasuredWidth();
-    }
-
-    protected int getParentHeight(){
-        return ((View) getParent()).getMeasuredHeight();
+        return mTutorial.getAnimationDuration() == -1 ? DEFAULT_ANIM_DURATION : mTutorial.getAnimationDuration();
     }
 
     @Override
@@ -834,7 +768,6 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
             if (mTitleView != null) mTitleView.setAnimation(animation);
 
             animation.start();
-
         }
     };
 }

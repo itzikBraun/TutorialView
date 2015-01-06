@@ -18,7 +18,7 @@ import java.util.Iterator;
 /**
  * Created by braunster on 04/12/14.
  */
-public class TutorialLayout extends RelativeLayout implements TutorialInterface, WalkThroughInterface {
+public /**/class TutorialLayout extends RelativeLayout implements TutorialInterface, WalkThroughInterface {
 
     public static final String TAG = TutorialLayout.class.getSimpleName();
     public static final boolean DEBUG = true;
@@ -74,6 +74,16 @@ public class TutorialLayout extends RelativeLayout implements TutorialInterface,
     @Override
     public void setPositionToSurround(float positionToSurroundX, float positionToSurroundY, int positionToSurroundWidth, int positionToSurroundHeight, String title) {
         mTutorialView.setPositionToSurround(positionToSurroundX, positionToSurroundY, positionToSurroundWidth, positionToSurroundHeight, title);
+    }
+
+    @Override
+    public void setTutorial(Tutorial tutorial, boolean show) {
+        mTutorialView.setTutorial(tutorial, show);
+    }
+
+    @Override
+    public void setTutorial(Tutorial tutorial) {
+        mTutorialView.setTutorial(tutorial);
     }
 
     @Override
@@ -169,7 +179,7 @@ public class TutorialLayout extends RelativeLayout implements TutorialInterface,
 
     @Override
     public void nextTutorial(Tutorial tutorial) {
-        mTutorialView.setTutorial(tutorial, null);
+        setTutorial(tutorial, true);
         dispatchNextTutorialShown();
     }
 
@@ -221,6 +231,16 @@ public class TutorialLayout extends RelativeLayout implements TutorialInterface,
     @Override
     public boolean isWalkThrough(){
         return tutorialList != null && tutorialList.size() > 0;
+    }
+
+    @Override
+    public void show() {
+        mTutorialView.show();
+    }
+
+    @Override
+    public void hide() {
+        mTutorialView.hide();
     }
 
     @Override

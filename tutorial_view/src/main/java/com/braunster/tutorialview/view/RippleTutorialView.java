@@ -58,7 +58,7 @@ public class RippleTutorialView extends AbstractTutorialView {
                     mViewToSurroundRadius, // Radius
                     mBackgroundPaint);
 
-            mBackgroundPaint.setColor(mTutorialBackgroundColor);
+            mBackgroundPaint.setColor(mTutorial.getBackgroundColor());
             mBackgroundPaint.setXfermode(sXfermodeNormal);
 
             /**
@@ -78,7 +78,7 @@ public class RippleTutorialView extends AbstractTutorialView {
 
     @Override
     public  void beforeFirstDraw(){
-        if (DEBUG) Log.d(TAG, "FirstDraw");
+        if (DEBUG) Log.d(TAG, "FirstDraw, Width: " + getMeasuredWidth() + ", Height: " + getMeasuredHeight());
 
         // Getting the longest distance from the screen size so that will be the max of the radius.
         int maxHeight, maxWidth;
@@ -107,8 +107,6 @@ public class RippleTutorialView extends AbstractTutorialView {
         // To make sure the child order is ok.
         ((View) getParent()).invalidate();
 
-        showing = true;
-
         setVisibility(INVISIBLE);
     }
 
@@ -127,20 +125,7 @@ public class RippleTutorialView extends AbstractTutorialView {
         // Animating the views out
         removeTutorialInfo();
 
-        hide(new Runnable() {
-            @Override
-            public void run() {
-                if (DEBUG) Log.d(TAG, "onEnd Collapse");
-
-                restoreActionBar();
-
-                closing = false;
-
-                showing = false;
-
-                dispatchTutorialClosed();
-            }
-        });
+        hide();
     }
 
     @Override
@@ -225,5 +210,45 @@ public class RippleTutorialView extends AbstractTutorialView {
         a.setDuration(getAnimationDuration());
         startAnimation(a);
         return a;
+    }
+
+    @Override
+    public void show() {
+
+        showing = true;
+
+        if (DEBUG) Log.v(TAG, "show");
+
+        show(new Runnable() {
+            @Override
+            public void run() {
+                // Only if the tutorial is still showing.
+                if (showing) {
+                    inflateTutorialInfo();
+                    setClickable(true);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void hide() {
+
+        if (DEBUG) Log.v(TAG, "hide");
+
+        hide(new Runnable() {
+            @Override
+            public void run() {
+                if (DEBUG) Log.d(TAG, "onEnd Collapse");
+
+                restoreActionBar();
+
+                closing = false;
+
+                showing = false;
+
+                dispatchTutorialClosed();
+            }
+        });
     }
 }

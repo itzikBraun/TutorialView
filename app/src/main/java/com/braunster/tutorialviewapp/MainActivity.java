@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 
 import com.braunster.tutorialview.object.Tutorial;
 import com.braunster.tutorialview.object.TutorialIntentBuilder;
@@ -42,13 +43,16 @@ public class MainActivity extends Activity {
         if (getActionBar() != null)
             getActionBar().setBackgroundDrawable(new ColorDrawable(Color.DKGRAY));
 
+        //Using the tutorial view
+        // This is used for the tutorial view that should be in your root view.
+        // This may lead to problems when used inside LinearLayout and maybe other view.
+        // The best thing to do is to use the TutorialActivity.
         tutorialView.setActionBarRestoreColor(Color.DKGRAY);
         tutorialView.changeActionBarColor(true);
         tutorialView.setActionBar(getActionBar());
         tutorialView.setHasActionBar(true);
         tutorialView.setTutorialTextTypeFace("fonts/roboto_light.ttf");
         tutorialView.setHasStatusBar(true);
-        //Using the tutorial view
         tutorialView.setTutorialText("This is some general text that is not that long but also not so short.");
     }
 
@@ -84,14 +88,20 @@ public class MainActivity extends Activity {
             // Setting the view that should be surrounded.
 //            tutorialView.setViewToSurround(v, v instanceof TextView ? ((TextView) v).getText().toString() : "Fixed Title");
 
-           /* int color =  randomColor();
-
             // Using the tutorial Activity for simple tutorial.
-            Intent intent = TutorialActivity.getIntent(MainActivity.this, v, true, "This is some general text that is not that long but also not so short.",color);
-            startActivity(intent);*/
+            int color =  randomColor();
+            TutorialIntentBuilder builder = new TutorialIntentBuilder(MainActivity.this);
+            Tutorial tutorial = new Tutorial(v, ((TextView) v).getText().toString());
+            tutorial.setInfoText("This view is on the top left");
+            tutorial.setBackgroundColor(Color.WHITE);
+            tutorial.setTutorialTextColor(Color.BLACK);
+
+            builder.setTutorial(tutorial);
+
+            startActivity(builder.getIntent());
 
             // Using the tutorial activity as a walk through
-            startActivity(walkThroughIntent());
+//            startActivity(walkThroughIntent());
 
             // Override the default animation of the entering activity.
             // This will allow the nice wrapping of the view by the tutorial activity.

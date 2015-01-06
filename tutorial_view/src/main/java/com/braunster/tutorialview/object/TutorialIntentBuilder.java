@@ -19,7 +19,7 @@ import java.util.Arrays;
 public class TutorialIntentBuilder {
 
     public static final String TAG = TutorialIntentBuilder.class.getSimpleName();
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     // View location, width and height.
     private static final String
@@ -27,6 +27,8 @@ public class TutorialIntentBuilder {
             VIEW_TO_SURROUND_Y = "view_to_surround_y",
             VIEW_TO_SURROUND_WIDTH = "view_to_surround_width",
             VIEW_TO_SURROUND_HEIGHT = "view_to_surround_height";
+
+    private static final String TUTORIAL_OBJ = "tutorial_obj";
 
     private static final String TUTORIAL_INFO_LAYOUT_ID = "tut_info_layout_id";
 
@@ -50,6 +52,11 @@ public class TutorialIntentBuilder {
 
     public TutorialIntentBuilder(Context context){
         intent = new Intent(context, TutorialActivity.class );
+    }
+
+    public TutorialIntentBuilder setTutorial(Tutorial tutorial){
+        intent.putExtra(TUTORIAL_OBJ, tutorial);
+        return this;
     }
 
     public TutorialIntentBuilder(Intent intent){
@@ -145,10 +152,31 @@ public class TutorialIntentBuilder {
         return this;
     }
 
+    /**
+     *  @return the intent that was build and populated with all attributes.
+     * */
     public Intent getIntent(){
         return intent;
     }
 
+    /**
+     * @return true if should skip the walk through when user press on the back button.
+     * */
+    public static boolean skipOnBackPressed(Intent intent){
+        return intent.getBooleanExtra(SKIP_TUTORIAL_ON_BACK_PRESSED, false);
+    }
+
+    public TutorialIntentBuilder setAnimationType(int animationType){
+        intent.putExtra(TUTORIAL_ANIMATION, animationType);
+        return this;
+    }
+
+    /**
+     *  Used in the tutorial activity to show the tutorial,
+     *
+     *  The data from the intent would be recovered and would be set on the TutorialInterface.
+     *
+     * */
     public static void showTutorial(TutorialInterface tutorial, Intent intent){
 
         // Showing the first tutorial in the list.
@@ -161,59 +189,76 @@ public class TutorialIntentBuilder {
                 ((WalkThroughInterface) tutorial).startWalkThrough();
                 return;
             }
-            else if (DEBUG) Log.d(TAG, "ShowTutorial, WalkThroughDoesNot have walk through data.");
+            else if (DEBUG) Log.d(TAG, "ShowTutorial, WalkThrough DoesNot have walk through data.");
         }
 
-        final int x = intent.getIntExtra(VIEW_TO_SURROUND_X, -1);
-        final int y = intent.getIntExtra(VIEW_TO_SURROUND_Y, -1);
-        final int width = intent.getIntExtra(VIEW_TO_SURROUND_WIDTH, -1);
-        final int height = intent.getIntExtra(VIEW_TO_SURROUND_HEIGHT, -1);
+        /**
+         * If we have set the tutorial data from a tutorial obj we can just call show.
+         *
+         * Else we would have to use the setPositionToSurround.
+         * */
+        if (intent.getExtras().containsKey(TUTORIAL_OBJ))
+        {
+            tutorial.show();
+        }
+        else
+        {
+            final int x = intent.getIntExtra(VIEW_TO_SURROUND_X, -1);
+            final int y = intent.getIntExtra(VIEW_TO_SURROUND_Y, -1);
+            final int width = intent.getIntExtra(VIEW_TO_SURROUND_WIDTH, -1);
+            final int height = intent.getIntExtra(VIEW_TO_SURROUND_HEIGHT, -1);
 
-        tutorial.setPositionToSurround(x, y, width, height);
+            tutorial.setPositionToSurround(x, y, width, height);
+        }
+
     }
 
+    /**
+     * Setup tutorial from data saved in the intent.
+     * */
     public static void updateTutorialViewFromIntent(final TutorialInterface tutorial, Intent intent){
-
         tutorial.setHasStatusBar(intent.getBooleanExtra(HAS_STATUS_BAR, true));
 
-        // Setting the tutorial background color if was given.
-        if (intent.getExtras().containsKey(TUTORIAL_BACKGROUND_COLOR))
-            tutorial.setTutorialBackgroundColor(intent.getIntExtra(TUTORIAL_BACKGROUND_COLOR, -1));
+        /**
+         * Update the tutorial with data from the intent.
+         * */
+        if (!intent.getExtras().containsKey(TUTORIAL_OBJ))
+        {
+            // Setting the tutorial background color if was given.
+            if (intent.getExtras().containsKey(TUTORIAL_BACKGROUND_COLOR))
+                tutorial.setTutorialBackgroundColor(intent.getIntExtra(TUTORIAL_BACKGROUND_COLOR, -1));
 
-        final int tutorialLayoutId = intent.getIntExtra(TUTORIAL_INFO_LAYOUT_ID, -1);
+            final int tutorialLayoutId = intent.getIntExtra(TUTORIAL_INFO_LAYOUT_ID, -1);
 
-        // Setting the custom layout id if isn't -1.
-        if (tutorialLayoutId == -1)
-            tutorial.setTutorialText(intent.getStringExtra(TUTORIAL_TEXT));
+            // Setting the custom layout id if isn't -1.
+            if (tutorialLayoutId == -1)
+                tutorial.setTutorialText(intent.getStringExtra(TUTORIAL_TEXT));
 
-        // Getting the text size, -1 will be ignored by the tutorial view.
-        tutorial.setTutorialTextSize(intent.getExtras().getInt(TUTORIAL_TEXT_SIZE, -1));
+            // Getting the text size, -1 will be ignored by the tutorial view.
+            tutorial.setTutorialTextSize(intent.getExtras().getInt(TUTORIAL_TEXT_SIZE, -1));
 
-        // Text color
-        if (intent.getExtras().containsKey(TUTORIAL_TEXT_COLOR))
-            tutorial.setTutorialTextColor(intent.getExtras().getInt(TUTORIAL_TEXT_COLOR));
+            // Text color
+            if (intent.getExtras().containsKey(TUTORIAL_TEXT_COLOR))
+                tutorial.setTutorialTextColor(intent.getExtras().getInt(TUTORIAL_TEXT_COLOR));
 
-        // Text Typeface
-        if (intent.getExtras().containsKey(TUTORIAL_TEXT_TYPEFACE))
-            tutorial.setTutorialTextTypeFace(intent.getExtras().getString(TUTORIAL_TEXT_TYPEFACE));
+            // Text Typeface
+            if (intent.getExtras().containsKey(TUTORIAL_TEXT_TYPEFACE))
+                tutorial.setTutorialTextTypeFace(intent.getExtras().getString(TUTORIAL_TEXT_TYPEFACE));
 
-        if (intent.getExtras().containsKey(TUTORIAL_ANIMATION))
-            tutorial.setAnimationType(AbstractTutorialView.AnimationType.values()[intent.getExtras().getInt(TUTORIAL_ANIMATION)]);
+            if (intent.getExtras().containsKey(TUTORIAL_ANIMATION))
+                tutorial.setAnimationType(AbstractTutorialView.AnimationType.values()[intent.getExtras().getInt(TUTORIAL_ANIMATION)]);
 
-        tutorial.setTutorialInfoLayoutId(tutorialLayoutId);
+            tutorial.setTutorialInfoLayoutId(tutorialLayoutId);
 
-        tutorial.setAnimationDuration(intent.getLongExtra(TUTORIAL_ANIMATION_DURATION, -1));
+            tutorial.setAnimationDuration(intent.getLongExtra(TUTORIAL_ANIMATION_DURATION, -1));
 
-        if (tutorial instanceof WalkThroughInterface)
-            ((WalkThroughInterface) tutorial).setWalkThroughData(intent.<Tutorial>getParcelableArrayListExtra(WALK_THROUGH_DATA));
+            if (tutorial instanceof WalkThroughInterface)
+                ((WalkThroughInterface) tutorial).setWalkThroughData(intent.<Tutorial>getParcelableArrayListExtra(WALK_THROUGH_DATA));
+        }
+        else
+        {
+            tutorial.setTutorial((Tutorial) intent.getParcelableExtra(TUTORIAL_OBJ), false);
+        }
     }
 
-    public static boolean skipOnBackPressed(Intent intent){
-        return intent.getBooleanExtra(SKIP_TUTORIAL_ON_BACK_PRESSED, false);
-    }
-
-    public TutorialIntentBuilder setAnimationType(int animationType){
-        intent.putExtra(TUTORIAL_ANIMATION, animationType);
-        return this;
-    }
 }

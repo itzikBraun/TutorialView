@@ -16,10 +16,8 @@ import android.view.animation.Transformation;
  */
 public class TutorialView extends AbstractTutorialView {
 
-    // TODO option to change the inner circle color and alpha or disabling it.
-
     public static final String TAG = TutorialView.class.getSimpleName();
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     /**
      * Left and Right path's used to create the arcs around the view that need to be surrounded.
@@ -50,8 +48,6 @@ public class TutorialView extends AbstractTutorialView {
 
         if (isInEditMode())
             return;
-
-        if (DEBUG) Log.d(TAG, "onDraw, Height: " + getMeasuredHeight());
 
         mLeftArcPath.reset();
         mRightArcPath.reset();
@@ -101,26 +97,7 @@ public class TutorialView extends AbstractTutorialView {
         // Animating the views out
         removeTutorialInfo();
 
-        hide(new Runnable() {
-            @Override
-            public void run() {
-                if (DEBUG) Log.d(TAG, "onEnd Collapse");
-
-                restoreActionBar();
-
-                closing = false;
-
-                showing = false;
-
-                // Setting the view height back to its original.
-                getLayoutParams().height = ((View) getParent()).getLayoutParams().height;
-                getLayoutParams().width = ((View) getParent()).getLayoutParams().width;
-
-                requestLayout();
-
-                dispatchTutorialClosed();
-            }
-        });
+        hide();
 
         // Refresh the view
         invalidate();
@@ -233,7 +210,7 @@ public class TutorialView extends AbstractTutorialView {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
 
-                switch (mAnimationType)
+                switch (mTutorial.getAnimationType())
                 {
                     case FROM_BOTTOM:
                     case FROM_TOP:
@@ -298,7 +275,7 @@ public class TutorialView extends AbstractTutorialView {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
 
-                switch (mAnimationType)
+                switch (mTutorial.getAnimationType())
                 {
                     case FROM_BOTTOM:
                     case FROM_TOP:
@@ -354,7 +331,7 @@ public class TutorialView extends AbstractTutorialView {
     protected boolean shouldDraw() {
         return super.shouldDraw() && showing &&
                 ( mBeforeAnimationHeight != getMeasuredHeight() ||
-                        (mAnimationType == AnimationType.FROM_LEFT || mAnimationType == AnimationType.FROM_RIGHT) );
+                        (mTutorial.getAnimationType() == AnimationType.FROM_LEFT || mTutorial.getAnimationType() == AnimationType.FROM_RIGHT) );
     }
 
     /**
@@ -377,10 +354,10 @@ public class TutorialView extends AbstractTutorialView {
     }
 
     private void prepareForAnimation(){
-        if (mAnimationType == AnimationType.RANDOM)
-            mAnimationType = AnimationType.getRandom();
+        if (mTutorial.getAnimationType() == AnimationType.RANDOM)
+            mTutorial.setAnimationType(AnimationType.getRandom());
 
-        switch (mAnimationType)
+        switch (mTutorial.getAnimationType())
         {
             case RANDOM:
                 if (DEBUG) Log.i(TAG, "Animating random");
@@ -453,5 +430,43 @@ public class TutorialView extends AbstractTutorialView {
                 ((LayoutParams) getLayoutParams()).addRule(ALIGN_PARENT_RIGHT);
                 break;
         }
+    }
+
+    @Override
+    public void show() {
+        show(new Runnable() {
+            @Override
+            public void run() {
+                // Only if the tutorial is still showing.
+                if (showing) {
+                    inflateTutorialInfo();
+                    setClickable(true);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void hide() {
+        hide(new Runnable() {
+            @Override
+            public void run() {
+                if (DEBUG) Log.d(TAG, "onEnd Collapse");
+
+                restoreActionBar();
+
+                closing = false;
+
+                showing = false;
+
+                // Setting the view height back to its original.
+                getLayoutParams().height = ((View) getParent()).getLayoutParams().height;
+                getLayoutParams().width = ((View) getParent()).getLayoutParams().width;
+
+                requestLayout();
+
+                dispatchTutorialClosed();
+            }
+        });
     }
 }
