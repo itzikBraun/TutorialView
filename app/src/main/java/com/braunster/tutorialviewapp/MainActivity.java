@@ -7,7 +7,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
-import android.widget.TextView;
 
 import com.braunster.tutorialview.object.Tutorial;
 import com.braunster.tutorialview.object.TutorialIntentBuilder;
@@ -91,10 +90,10 @@ public class MainActivity extends Activity {
             // Using the tutorial Activity for simple tutorial.
             int color =  randomColor();
             TutorialIntentBuilder builder = new TutorialIntentBuilder(MainActivity.this);
-            Tutorial tutorial = new Tutorial(v, ((TextView) v).getText().toString());
-            tutorial.setInfoText("This view is on the top left");
-            tutorial.setBackgroundColor(Color.WHITE);
-            tutorial.setTutorialTextColor(Color.BLACK);
+            Tutorial tutorial = new Tutorial(v, "The Title");
+            tutorial.setInfoText("This is the explanation about the view.");
+            tutorial.setBackgroundColor(randomColor());
+            tutorial.setTutorialTextColor(Color.WHITE);
 
             builder.setTutorial(tutorial);
 

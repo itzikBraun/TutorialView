@@ -47,7 +47,7 @@ public class TutorialActivity extends Activity {
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
-        if (hasFocus)
+        if (hasFocus && !mTutorialLayout.isShowing())
             mTutorialLayout.post(new Runnable() {
                 @Override
                 public void run() {
