@@ -1,5 +1,7 @@
 ##TutorialView
 
+![alt tag](http://raw.github.com/ItzikBraun/TutorialView/master/screen_shots/scr_s_3_small.png)
+
 An Android library project providing Activity with explenation about views in your app.
 
 The TutorialActivity can be used as a walk through for the entire screen that is currently visible, Or just for one view on the screen.
