@@ -1,18 +1,16 @@
 package com.braunster.tutorialviewapp;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
-import com.braunster.tutorialview.object.Tutorial;
+import com.braunster.tutorialview.object.TutorialBuilder;
 import com.braunster.tutorialview.object.TutorialIntentBuilder;
 import com.braunster.tutorialview.view.TutorialView;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -89,19 +87,28 @@ public class MainActivity extends Activity {
 
             // Using the tutorial Activity for simple tutorial.
             int color =  randomColor();
+            
             TutorialIntentBuilder builder = new TutorialIntentBuilder(MainActivity.this);
-            Tutorial tutorial = new Tutorial(v, "The Title");
-            tutorial.setInfoText("This is the explanation about the view.");
-            tutorial.setBackgroundColor(randomColor());
-            tutorial.setTutorialTextColor(Color.WHITE);
+            
+            TutorialBuilder tBuilder = new TutorialBuilder();
+            
+            tBuilder.setTitle("The Title")
+                    .setViewToSurround(v)
+                    .setInfoText("This is the explanation about the view.")
+                    .setBackgroundColor(randomColor())
+                    .setTutorialTextColor(Color.WHITE)
+                    .setTutorialTextTypeFaceName("fonts/olivier.ttf")
+                    .setTutorialTextSize(25)
+                    .setAnimationDuration(500);
 
-            builder.setTutorial(tutorial);
+            builder.setTutorial(tBuilder.build());
 
             startActivity(builder.getIntent());
 
             // Using the tutorial activity as a walk through
 //            startActivity(walkThroughIntent());
-
+            
+            
             // Override the default animation of the entering activity.
             // This will allow the nice wrapping of the view by the tutorial activity.
             overridePendingTransition(R.anim.dummy, R.anim.dummy);
@@ -121,7 +128,7 @@ public class MainActivity extends Activity {
             super.onBackPressed();
     }
 
-    private Intent walkThroughIntent(){
+    /*private Intent walkThroughIntent(){
 
         TutorialIntentBuilder builder = new TutorialIntentBuilder(this);
 
@@ -152,5 +159,5 @@ public class MainActivity extends Activity {
         builder.setWalkThroughList(tutorials);
 
         return builder.getIntent();
-    }
+    }*/
 }

@@ -58,7 +58,7 @@ public class RippleTutorialView extends AbstractTutorialView {
                     mViewToSurroundRadius, // Radius
                     mBackgroundPaint);
 
-            mBackgroundPaint.setColor(mTutorial.getBackgroundColor());
+            mBackgroundPaint.setColor(mTutorial.getTutorialBackgroundColor());
             mBackgroundPaint.setXfermode(sXfermodeNormal);
 
             /**

@@ -1,17 +1,17 @@
 package com.braunster.tutorialview.object;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.View;
 
+import com.braunster.tutorialview.TutorialInterface;
 import com.braunster.tutorialview.view.AbstractTutorialView;
 
 /**
  * Created by braunster on 24/12/14.
  */
-public class Tutorial implements Parcelable {
+public class Tutorial implements Parcelable , TutorialInterface {
 
     private String mTitle;
 
@@ -49,12 +49,7 @@ public class Tutorial implements Parcelable {
      * Holds the name of the typeface that will be used for the default info view text view
      * */
     protected String mTutorialTextTypeFaceName = null;
-
-    /**
-     * Holds the typeface that will be used for the default info view text view
-     * */
-    protected Typeface mTutorialTextTypeFace = null;
-
+    
     /**
      * Holds the size of the default info view text view.
      * */
@@ -69,50 +64,21 @@ public class Tutorial implements Parcelable {
 
     }
 
-    public Tutorial(String title, float positionToSurroundX, float positionToSurroundY, int positionToSurroundWidth, int positionToSurroundHeight) {
-        this.mTitle = title;
-        this.mPositionToSurroundX = positionToSurroundX;
-        this.mPositionToSurroundY = positionToSurroundY;
-        this.mPositionToSurroundWidth = positionToSurroundWidth;
-        this.mPositionToSurroundHeight = positionToSurroundHeight;
-    }
-
-    public Tutorial(float positionToSurroundX, float positionToSurroundY, int positionToSurroundWidth, int positionToSurroundHeight) {
-        this.mPositionToSurroundX = positionToSurroundX;
-        this.mPositionToSurroundY = positionToSurroundY;
-        this.mPositionToSurroundWidth = positionToSurroundWidth;
-        this.mPositionToSurroundHeight = positionToSurroundHeight;
-    }
-
-    public Tutorial(View view, String title){
-        this.mTitle = title;
-
-        int[] loc = new int[2];
-        view.getLocationOnScreen(loc);
-        mPositionToSurroundX = loc[0];
-        mPositionToSurroundY = loc[1];
-
-        mPositionToSurroundHeight = view.getMeasuredHeight();
-        mPositionToSurroundWidth = view.getMeasuredWidth();
-    }
-
-    public Tutorial(View view){
-        int[] loc = new int[2];
-        view.getLocationOnScreen(loc);
-        mPositionToSurroundX = loc[0];
-        mPositionToSurroundY = loc[1];
-
-        mPositionToSurroundHeight = view.getMeasuredHeight();
-        mPositionToSurroundWidth = view.getMeasuredWidth();
-    }
-
-
     public void clear(){
         mPositionToSurroundWidth = -1;
         mPositionToSurroundHeight = -1;
     }
 
+    public void setViewToSurround(View view){
+        int[] loc = new int[2];
+        view.getLocationOnScreen(loc);
+        mPositionToSurroundX = loc[0];
+        mPositionToSurroundY = loc[1];
 
+        mPositionToSurroundHeight = view.getMeasuredHeight();
+        mPositionToSurroundWidth = view.getMeasuredWidth();        
+    }
+    
     public String getTitle(){
         return mTitle;
     }
@@ -133,41 +99,11 @@ public class Tutorial implements Parcelable {
         return mPositionToSurroundHeight;
     }
 
-    public int getBackgroundColor() {
-        return mBackgroundColor;
-    }
-
-    public void setBackgroundColor(int mBackgroundColor) {
-        this.mBackgroundColor = mBackgroundColor;
-    }
-
-    public void setInfoText(String mInfoText) {
-        this.mInfoText = mInfoText;
-    }
-
-    public String getInfoText() {
-        return mInfoText;
-    }
-
-    public int getTutorialTextSize() {
-        return mTutorialTextSize;
-    }
-
-    public void setTutorialTextSize(int mTutorialTextSize) {
-        this.mTutorialTextSize = mTutorialTextSize;
-    }
-
-
-    public void setTitle(String mTitle) {
-        this.mTitle = mTitle;
-    }
-
-
     public void setPositionToSurroundX(float mPositionToSurroundX) {
         this.mPositionToSurroundX = mPositionToSurroundX;
     }
 
-    public void setmPositionToSurroundY(float mPositionToSurroundY) {
+    public void setPositionToSurroundY(float mPositionToSurroundY) {
         this.mPositionToSurroundY = mPositionToSurroundY;
     }
 
@@ -179,47 +115,94 @@ public class Tutorial implements Parcelable {
         this.mPositionToSurroundHeight = mPositionToSurroundHeight;
     }
 
+    
+    @Override
+    public int getTutorialBackgroundColor() {
+        return mBackgroundColor;
+    }
+
+    @Override
+    public void setTutorialBackgroundColor(int mBackgroundColor) {
+        this.mBackgroundColor = mBackgroundColor;
+    }
+
+    @Override
+    public void setTutorialText(String mInfoText) {
+        this.mInfoText = mInfoText;
+    }
+
+    @Override
+    public String getTutorialText() {
+        return mInfoText;
+    }
+  
+    @Override
+    public int getTutorialTextSize() {
+        return mTutorialTextSize;
+    }
+
+    @Override
+    public void setTutorialTextSize(int mTutorialTextSize) {
+        this.mTutorialTextSize = mTutorialTextSize;
+    }
+    
+    public void setTitle(String mTitle) {
+        this.mTitle = mTitle;
+    }
+
+    @Override
     public int getTutorialTextColor() {
         return mTutorialTextColor;
     }
 
+    @Override
     public void setTutorialTextColor(int mTutorialTextColor) {
         this.mTutorialTextColor = mTutorialTextColor;
     }
 
-    public Typeface getTutorialTextTypeFace() {
-        return mTutorialTextTypeFace;
-    }
-
-    public void setTutorialTextTypeFace(Typeface mTutorialTextTypeFace) {
-        this.mTutorialTextTypeFace = mTutorialTextTypeFace;
-    }
-
+    @Override
     public int getTutorialInfoLayoutId() {
         return mTutorialInfoLayoutId;
     }
 
+    @Override
     public void setTutorialInfoLayoutId(int mTutorialInfoLayoutId) {
         this.mTutorialInfoLayoutId = mTutorialInfoLayoutId;
     }
 
+    @Override
     public AbstractTutorialView.AnimationType getAnimationType() {
         return mAnimationType;
     }
 
+    @Override
     public void setAnimationType(AbstractTutorialView.AnimationType mAnimationType) {
         this.mAnimationType = mAnimationType;
     }
 
+    @Override
     public long getAnimationDuration() {
         return mAnimationDuration;
     }
 
+    @Override
     public void setAnimationDuration(long mAnimationDuration) {
         this.mAnimationDuration = mAnimationDuration;
     }
 
-    /** For passign the object between activities.
+    @Override
+    public void setTutorialTextTypeFace(String mTutorialTextTypeFaceName) {
+        this.mTutorialTextTypeFaceName = mTutorialTextTypeFaceName;
+    }
+
+    
+    public String getTutorialTextTypeFace() {
+        return mTutorialTextTypeFaceName;
+    }
+
+    
+    
+    /** For passing the object between activities.
      * */
     Tutorial(Parcel in) {
         this.mTitle = in.readString();
@@ -233,6 +216,7 @@ public class Tutorial implements Parcelable {
         this.mTutorialInfoLayoutId = in.readInt();
         this.mTutorialTextTypeFaceName = in.readString();
         this.mTutorialTextColor = in.readInt();
+        this.mTutorialTextSize = in.readInt();
     }
 
     public static final Parcelable.Creator<Tutorial> CREATOR
@@ -265,5 +249,6 @@ public class Tutorial implements Parcelable {
         dest.writeInt(mTutorialInfoLayoutId);
         dest.writeString(mTutorialTextTypeFaceName);
         dest.writeInt(mTutorialTextColor);
+        dest.writeInt(mTutorialTextSize);
     }
 }

@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.braunster.tutorialview.TutorialInterface;
+import com.braunster.tutorialview.TutorialViewInterface;
 import com.braunster.tutorialview.WalkThroughInterface;
 import com.braunster.tutorialview.object.Tutorial;
 
@@ -18,7 +18,7 @@ import java.util.Iterator;
 /**
  * Created by braunster on 04/12/14.
  */
-public /**/class TutorialLayout extends RelativeLayout implements TutorialInterface, WalkThroughInterface {
+public /**/class TutorialLayout extends RelativeLayout implements TutorialViewInterface, WalkThroughInterface {
 
     public static final String TAG = TutorialLayout.class.getSimpleName();
     public static final boolean DEBUG = true;
@@ -92,6 +92,11 @@ public /**/class TutorialLayout extends RelativeLayout implements TutorialInterf
     }
 
     @Override
+    public int getTutorialInfoLayoutId() {
+        return mTutorialView.getTutorialInfoLayoutId();
+    }
+
+    @Override
     public void setActionBar(ActionBar actionBar) {
         mTutorialView.setActionBar(actionBar);
     }
@@ -112,6 +117,11 @@ public /**/class TutorialLayout extends RelativeLayout implements TutorialInterf
     @Override
     public void setTutorialBackgroundColor(int mTutorialBackgroundColor) {
         mTutorialView.setTutorialBackgroundColor(mTutorialBackgroundColor);
+    }
+
+    @Override
+    public int getTutorialBackgroundColor() {
+        return mTutorialView.getTutorialBackgroundColor();
     }
 
     @Override
@@ -140,8 +150,18 @@ public /**/class TutorialLayout extends RelativeLayout implements TutorialInterf
     }
 
     @Override
+    public String getTutorialText() {
+        return mTutorialView.getTutorialText();
+    }
+
+    @Override
     public void setTutorialTextSize(int mTutorialTextSize) {
         mTutorialView.setTutorialTextSize(mTutorialTextSize);
+    }
+
+    @Override
+    public int getTutorialTextSize() {
+        return mTutorialView.getTutorialTextSize();
     }
 
     @Override
@@ -150,8 +170,18 @@ public /**/class TutorialLayout extends RelativeLayout implements TutorialInterf
     }
 
     @Override
+    public int getTutorialTextColor() {
+        return mTutorialView.getTutorialTextColor();
+    }
+
+    @Override
     public void setTutorialTextTypeFace(String tutorialTextTypeFaceName) {
         mTutorialView.setTutorialTextTypeFace(tutorialTextTypeFaceName);
+    }
+
+    @Override
+    public String getTutorialTextTypeFace() {
+        return mTutorialView.getTutorialTextTypeFace();
     }
 
     @Override
@@ -160,8 +190,18 @@ public /**/class TutorialLayout extends RelativeLayout implements TutorialInterf
     }
 
     @Override
+    public AbstractTutorialView.AnimationType getAnimationType() {
+        return mTutorialView.getAnimationType();
+    }
+
+    @Override
     public void setAnimationDuration(long duration) {
         mTutorialView.setAnimationDuration(duration);
+    }
+
+    @Override
+    public long getAnimationDuration() {
+        return mTutorialView.getAnimationDuration();
     }
 
     @Override

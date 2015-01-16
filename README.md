@@ -6,51 +6,62 @@ An Android library project providing Activity with explenation about views in yo
 
 The TutorialActivity can be used as a walk through for the entire screen that is currently visible, Or just for one view on the screen.
 
-To get the intent to start the TutorialActivity you need to use the TutorialIntentBuilder, The builder will help you build the intent to start the activity, You can set each paramater using the builder or pass to it a Toturial with all you customizations. (You can pass a listt of Tutorials to create a walkthrough).
-
-Each tutorial that was passed holds it's position on screen, title, background color, the text explenation and more customizable attributes.
+To get the intent to start the TutorialActivity you need to use the TutorialIntentBuilder, The builder will help you build the intent to start the activity, You would have to pass a Tutorial object to the intent builder.
 
 ###Usage
-######Example of creating a walk through from two Tutorials.
+####Tutorial
+The tutorial object holds the tutorial info and attributes. You can create a Tutorial by using the TutorialBuilder.
+You can customize the following:
+* Title - Will apear on the top of the view, If the view that is surrounded is on top it will be shown below it.
+* TutorialText - The explanation of about the view, It will apear above or below the view.
+* BackgroundColor - The background color of the view.
+* TutorialTextSize - The size that will be used for the tutorial explantion text.
+* TypefaceName - The path to the wanted typeface to use for all text view in the tutorial, Example: "/fonts/arial.ttf".
+* AnimationDuration - the duration time in milliseconds that will be used for the animation.
+* ~~AnimatinType - the animation that will be used for showing and hiding the tutorial~~ This is a work in progress currently not working.
 
-```java
-// The Intent Builder
-TutorialIntentBuilder builder = new TutorialIntentBuilder(this);
-
-//Title is optional
-Tutorial tutorial = new Tutorial(viewThatYouWantToSurround, "Title");
-tutorial.setInfoText("Explanation on the view");
-tutorial.setBackgroundColor(Color.BLACK);
-Tutorial tutorial2 = new Tutorial(viewThatYouWantToSurround2, "Second Title");
-tutorial2 .setInfoText("Explanation on the view");
-tutorial2.setBackgroundColor(Color.BLUE);
- 
-ArrayList<Tutorial> tutorials = new ArrayList<>();
-tutorials.add(tutorial);
-tutorials.add(tutorial2);
- 
-builder.setWalkThroughList(tutorials);
-
-// Starting the activity with an intent from the builder.
-startActivity(builder.getIntent());
-overridePendingTransition(R.anim.dummy, R.anim.dummy);
-```
+Each tutorial that was passed holds it's position on screen, title, background color, the text explenation and more customizable attributes.
 
 ######Example of creating a simple tutorial.
 
 ``` java
-TutorialIntentBuilder builder = new TutorialIntentBuilder(MainActivity.this);
-Tutorial tutorial = new Tutorial(viewThatYouWantToSurround2, "Title");
-tutorial.setInfoText("Explanation about the view");
+            TutorialIntentBuilder builder = new TutorialIntentBuilder(MainActivity.this);
+            
+            TutorialBuilder tBuilder = new TutorialBuilder();
+            
+            tBuilder.setTitle("The Title")
+                    .setViewToSurround(v)
+                    .setInfoText("This is the explanation about the view.")
+                    .setBackgroundColor(randomColor())
+                    .setTutorialTextColor(Color.WHITE)
+                    .setTutorialTextTypeFaceName("fonts/test_name.ttf")
+                    .setTutorialTextSize(25)
+                    .setAnimationDuration(500);
 
-// Background as white
-tutorial.setBackgroundColor(Color.WHITE);
+            builder.setTutorial(tBuilder.build());
 
-// All text will be black
-tutorial.setTutorialTextColor(Color.BLACK);
+            startActivity(builder.getIntent());
+            
+            // Override the default animation of the entering activity.
+            // This will allow the nice wrapping of the view by the tutorial activity.
+            overridePendingTransition(R.anim.dummy, R.anim.dummy);
+```
+######Example of creating a walk through from two Tutorials.
 
-builder.setTutorial(tutorial);
+```java
+ArrayList<Tutorial> tutorials = new ArrayList<>();
+tutorials.add(tutorial);
+tutorials.add(tutorial2);
+tutorials.add(tutorial3);
+tutorials.add(tutorial4);
 
+builder.skipTutorialOnBackPressed(true);
+
+builder.setWalkThroughList(tutorials);
+ 
+builder.setWalkThroughList(tutorials);
+
+// Starting the activity with an intent from the builder.
 startActivity(builder.getIntent());
 overridePendingTransition(R.anim.dummy, R.anim.dummy);
 ```
@@ -80,7 +91,6 @@ You can also copy past it to your project and before adding it to your dependenc
 // Notice that in your settings file there would be more names so dont delete them, This are your other modules.
 include':tutorial_view'
 ```
-
 
 ###TODO:
 * Return result when TutorialActivity finishes so you could know when it was done and if was skipped.
