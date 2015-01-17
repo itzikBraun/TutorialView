@@ -25,26 +25,26 @@ Each tutorial that was passed holds it's position on screen, title, background c
 ######Example of creating a simple tutorial.
 
 ``` java
-            TutorialIntentBuilder builder = new TutorialIntentBuilder(MainActivity.this);
+TutorialIntentBuilder builder = new TutorialIntentBuilder(MainActivity.this);
             
-            TutorialBuilder tBuilder = new TutorialBuilder();
+TutorialBuilder tBuilder = new TutorialBuilder();
             
-            tBuilder.setTitle("The Title")
-                    .setViewToSurround(v)
-                    .setInfoText("This is the explanation about the view.")
-                    .setBackgroundColor(randomColor())
-                    .setTutorialTextColor(Color.WHITE)
-                    .setTutorialTextTypeFaceName("fonts/test_name.ttf")
-                    .setTutorialTextSize(25)
-                    .setAnimationDuration(500);
+tBuilder.setTitle("The Title")
+            .setViewToSurround(v)
+            .setInfoText("This is the explanation about the view.")
+            .setBackgroundColor(randomColor())
+            .setTutorialTextColor(Color.WHITE)
+            .setTutorialTextTypeFaceName("fonts/test_name.ttf")
+            .setTutorialTextSize(25)
+            .setAnimationDuration(500);
 
-            builder.setTutorial(tBuilder.build());
+builder.setTutorial(tBuilder.build());
 
-            startActivity(builder.getIntent());
+startActivity(builder.getIntent());
             
-            // Override the default animation of the entering activity.
-            // This will allow the nice wrapping of the view by the tutorial activity.
-            overridePendingTransition(R.anim.dummy, R.anim.dummy);
+// Override the default animation of the entering activity.
+// This will allow the nice wrapping of the view by the tutorial activity.
+overridePendingTransition(R.anim.dummy, R.anim.dummy);
 ```
 ######Example of creating a walk through from two Tutorials.
 
@@ -56,8 +56,6 @@ tutorials.add(tutorial3);
 tutorials.add(tutorial4);
 
 builder.skipTutorialOnBackPressed(true);
-
-builder.setWalkThroughList(tutorials);
  
 builder.setWalkThroughList(tutorials);
 
