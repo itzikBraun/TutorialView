@@ -1,6 +1,6 @@
 ##TutorialView
 
-![alt tag](http://raw.github.com/ItzikBraun/TutorialView/master/screen_shots/scr_s_3_small.png)
+![alt tag](http://raw.github.com/ItzikBraun/TutorialView/master/screen_shots/example.gif)
 
 An Android library project providing Activity with explenation about views in your app.
 
