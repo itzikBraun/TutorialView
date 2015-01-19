@@ -94,7 +94,7 @@ include':tutorial_view'
 * Return result when TutorialActivity finishes so you could know when it was done and if was skipped.
 
 ###Author
-[Itzik Braun - Google+](https://plus.google.com/115008798239626950774/posts?hl=iw)
+[Itzik Braun - Google+](https://plus.google.com/+ItzikBraunster)
 
 ###LICENSE
     Copyright (C) 2014  Itzik Braun
