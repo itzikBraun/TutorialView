@@ -1,3 +1,4 @@
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-TutorialView-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1408)
 ##TutorialView
 
 ![alt tag](http://raw.github.com/ItzikBraun/TutorialView/master/screen_shots/example.gif)
