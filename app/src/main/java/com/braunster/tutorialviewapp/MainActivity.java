@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
+import com.braunster.tutorialview.object.Tutorial;
 import com.braunster.tutorialview.object.TutorialBuilder;
 import com.braunster.tutorialview.object.TutorialIntentBuilder;
 import com.braunster.tutorialview.view.TutorialView;
@@ -14,7 +15,7 @@ import com.braunster.tutorialview.view.TutorialView;
 import java.util.Random;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnClickListener {
 
     private TutorialView tutorialView;
 
@@ -31,11 +32,11 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         tutorialView = (TutorialView) findViewById(R.id.tutorial_view);
 
-        findViewById(R.id.btn_test_button).setOnClickListener(tutorialClickListener);
-        findViewById(R.id.btn_test_button2).setOnClickListener(tutorialClickListener);
-        findViewById(R.id.view_to_surround).setOnClickListener(tutorialClickListener);
-        findViewById(R.id.view_to_surround2).setOnClickListener(tutorialClickListener);
-        findViewById(R.id.linear_test).setOnClickListener(tutorialClickListener);
+        findViewById(R.id.view_bottom_left).setOnClickListener(this);
+        findViewById(R.id.view_top_right).setOnClickListener(this);
+        findViewById(R.id.view_almost_top_right).setOnClickListener(this);
+        findViewById(R.id.view_top_left).setOnClickListener(this);
+        findViewById(R.id.view_center).setOnClickListener(this);
 
         if (getActionBar() != null)
             getActionBar().setBackgroundDrawable(new ColorDrawable(Color.DKGRAY));
@@ -60,61 +61,6 @@ public class MainActivity extends Activity {
         return true;
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-
-        if (hasFocus)
-        {
-
-        }
-    }
-
-
-    private View.OnClickListener tutorialClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-            // This is used for the tutorial view that should be in your root view.
-            // This may lead to problems when used inside LinearLayout and maybe other view.
-            // The best thing to do is to use the TutorialActivity.
-
-            // Set the background color.
-//            tutorialView.setTutorialBackgroundColor(randomColor());
-
-            // Setting the view that should be surrounded.
-//            tutorialView.setViewToSurround(v, v instanceof TextView ? ((TextView) v).getText().toString() : "Fixed Title");
-
-            // Using the tutorial Activity for simple tutorial.
-            int color =  randomColor();
-            
-            TutorialIntentBuilder builder = new TutorialIntentBuilder(MainActivity.this);
-            
-            TutorialBuilder tBuilder = new TutorialBuilder();
-            
-            tBuilder.setTitle("The Title")
-                    .setViewToSurround(v)
-                    .setInfoText("This is the explanation about the view.")
-                    .setBackgroundColor(randomColor())
-                    .setTutorialTextColor(Color.WHITE)
-                    .setTutorialTextTypeFaceName("fonts/olivier.ttf")
-                    .setTutorialTextSize(25)
-                    .setAnimationDuration(500);
-
-            builder.setTutorial(tBuilder.build());
-
-            startActivity(builder.getIntent());
-
-            // Using the tutorial activity as a walk through
-//            startActivity(walkThroughIntent());
-            
-            
-            // Override the default animation of the entering activity.
-            // This will allow the nice wrapping of the view by the tutorial activity.
-            overridePendingTransition(R.anim.dummy, R.anim.dummy);
-        }
-    };
-
     private int randomColor(){
         Random rnd = new Random();
         return  Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
@@ -128,36 +74,69 @@ public class MainActivity extends Activity {
             super.onBackPressed();
     }
 
-    /*private Intent walkThroughIntent(){
+    private TutorialBuilder getBasicBuilderForTest(View v){
+        TutorialBuilder tBuilder = new TutorialBuilder();
 
-        TutorialIntentBuilder builder = new TutorialIntentBuilder(this);
+        tBuilder.setTitle("The Title")
+                .setViewToSurround(v)
+                .setInfoText("This is the explanation about the view.")
+                .setBackgroundColor(randomColor())
+                .setTutorialTextColor(Color.WHITE)
+                .setTutorialTextTypeFaceName("fonts/olivier.ttf")
+                .setTutorialTextSize(30)
+                .setAnimationDuration(500);
+        
+        return tBuilder;        
+    }
 
-        Tutorial tutorial = new Tutorial(findViewById(R.id.view_to_surround2), "Top Left");
-        tutorial.setInfoText("This view is on the top left");
-        tutorial.setBackgroundColor(Color.BLACK);
+    @Override
+    public void onClick(View v) {
 
-        Tutorial tutorial2 = new Tutorial(findViewById(R.id.btn_test_button), "Bottom Left");
-        tutorial2 .setInfoText("This view is on the bottom left");
-        tutorial2.setBackgroundColor(Color.BLUE);
+        TutorialIntentBuilder builder = new TutorialIntentBuilder(MainActivity.this);
 
-        Tutorial tutorial3 = new Tutorial(findViewById(R.id.btn_test_button2), "Right");
-        tutorial3.setInfoText("this view is on the right");
-        tutorial3.setBackgroundColor(Color.RED);
+        TutorialBuilder tBuilder = getBasicBuilderForTest(v);
+        
+        switch (v.getId())
+        {
+            case R.id.view_bottom_left:
 
-        Tutorial tutorial4 = new Tutorial(findViewById(R.id.linear_test));
-        tutorial4.setInfoText("This is a centered view");
-        tutorial4.setBackgroundColor(Color.GREEN);
+                tBuilder.setTutorialInfoTextPosition(Tutorial.InfoPosition.ABOVE);
+                tBuilder.setTutorialGotItPosition(Tutorial.GotItPosition.BOTTOM);
 
-        ArrayList<Tutorial> tutorials = new ArrayList<>();
-        tutorials.add(tutorial);
-        tutorials.add(tutorial2);
-        tutorials.add(tutorial3);
-        tutorials.add(tutorial4);
+                break;
 
-        builder.skipTutorialOnBackPressed(true);
+            case R.id.view_top_right:
+                
+                tBuilder.setTutorialInfoTextPosition(Tutorial.InfoPosition.LEFT_OF);
 
-        builder.setWalkThroughList(tutorials);
+                break;
 
-        return builder.getIntent();
-    }*/
+            case R.id.view_almost_top_right:
+
+                tBuilder.setTutorialInfoTextPosition(Tutorial.InfoPosition.RIGHT_OF);
+
+                break;
+
+            case R.id.view_top_left:
+
+                tBuilder.setTutorialInfoTextPosition(Tutorial.InfoPosition.BELOW);
+
+                break;
+
+            case R.id.view_center:
+
+                tBuilder.setTutorialInfoTextPosition(Tutorial.InfoPosition.BELOW);
+                tBuilder.setTutorialGotItPosition(Tutorial.GotItPosition.BOTTOM);
+                
+                break;
+        }
+
+        builder.setTutorial(tBuilder.build());
+
+        startActivity(builder.getIntent());
+
+        // Override the default animation of the entering activity.
+        // This will allow the nice wrapping of the view by the tutorial activity.
+        overridePendingTransition(R.anim.dummy, R.anim.dummy);
+    }
 }

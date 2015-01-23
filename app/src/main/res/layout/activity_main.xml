@@ -16,7 +16,7 @@
         android:textSize="30sp"
 
         android:background="@drawable/circle_button"
-        android:id="@+id/view_to_surround"
+        android:id="@+id/view_almost_top_right"
         android:gravity="center"
         android:layout_marginLeft="100dp"
         android:textColor="@android:color/white"
@@ -29,7 +29,7 @@
         android:orientation="vertical"
         android:gravity="center"
         android:layout_centerInParent="true"
-        android:id="@+id/linear_test">
+        android:id="@+id/view_center">
 
         <TextView
             android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
         android:layout_margin="5dp"
         android:background="@android:color/holo_purple"
         android:padding="5dp"
-        android:id="@+id/view_to_surround2"
+        android:id="@+id/view_top_left"
         android:gravity="center"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -73,7 +73,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="20dp"
         android:layout_margin="5dp"
-        android:id="@+id/btn_test_button"/>
+        android:id="@+id/view_bottom_left"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -82,6 +82,6 @@
         android:background="@android:color/holo_blue_dark"
         android:layout_alignParentRight="true"
         android:layout_marginTop="50dp"
-        android:id="@+id/btn_test_button2"/>
+        android:id="@+id/view_top_right"/>
 
 </RelativeLayout>
