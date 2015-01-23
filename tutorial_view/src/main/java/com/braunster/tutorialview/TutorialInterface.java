@@ -87,4 +87,12 @@ public interface TutorialInterface {
     public void setAnimationDuration(long duration);
     
     public long getAnimationDuration();
+
+    public void setTutorialInfoTextPosition(int infoTextPosition);
+
+    public int getTutorialInfoTextPosition();
+
+    public void setTutorialGotItPosition(int gotItPosition);
+
+    public int getTutorialGotItPosition();
 }

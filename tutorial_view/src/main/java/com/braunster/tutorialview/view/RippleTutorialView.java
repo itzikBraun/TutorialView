@@ -16,7 +16,7 @@ import android.view.animation.Transformation;
 public class RippleTutorialView extends AbstractTutorialView {
 
     public static final String TAG = RippleTutorialView.class.getSimpleName();
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     private int mAnimatedRadius = -1;
 

@@ -18,7 +18,7 @@ import java.util.Iterator;
 /**
  * Created by braunster on 04/12/14.
  */
-public /**/class TutorialLayout extends RelativeLayout implements TutorialViewInterface, WalkThroughInterface {
+public class TutorialLayout extends RelativeLayout implements TutorialViewInterface, WalkThroughInterface {
 
     public static final String TAG = TutorialLayout.class.getSimpleName();
     public static final boolean DEBUG = true;
@@ -202,6 +202,26 @@ public /**/class TutorialLayout extends RelativeLayout implements TutorialViewIn
     @Override
     public long getAnimationDuration() {
         return mTutorialView.getAnimationDuration();
+    }
+
+    @Override
+    public void setTutorialInfoTextPosition(int infoTextPosition) {
+        mTutorialView.setTutorialInfoTextPosition(infoTextPosition);
+    }
+
+    @Override
+    public int getTutorialInfoTextPosition() {
+        return mTutorialView.getTutorialInfoTextPosition();
+    }
+
+    @Override
+    public void setTutorialGotItPosition(int gotItPosition) {
+        mTutorialView.setTutorialGotItPosition(gotItPosition);
+    }
+
+    @Override
+    public int getTutorialGotItPosition() {
+        return mTutorialView.getTutorialGotItPosition();
     }
 
     @Override

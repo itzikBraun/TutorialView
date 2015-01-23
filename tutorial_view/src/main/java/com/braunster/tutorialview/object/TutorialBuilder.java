@@ -21,6 +21,20 @@ public class TutorialBuilder  {
     private int mPositionToSurroundWidth = -1, mPositionToSurroundHeight = -1;
 
     /**
+     * Holds the value that will be used for placing the info text in the tutorial view.
+     *
+     * @see com.braunster.tutorialview.object.Tutorial.InfoPosition
+     */
+    private int mTutorialInfoTextPosition = Tutorial.InfoPosition.AUTO;
+
+    /**
+     * Holds the value that will be used for placing the "GotIt" button in the tutorial view.
+     *
+     * @see com.braunster.tutorialview.object.Tutorial.GotItPosition
+     */
+    private int mTutorialGotItPosition = Tutorial.GotItPosition.AUTO;
+    
+    /**
      * Holds the animation duration that will be used to animate the tutorial in and out.
      *
      * Id does not assigned it will be ignored and {@link com.braunster.tutorialview.view.AbstractTutorialView#DEFAULT_ANIM_DURATION } will be used.
@@ -148,6 +162,16 @@ public class TutorialBuilder  {
         return this;
     }
 
+    public TutorialBuilder setTutorialInfoTextPosition(int infoTextPosition) {
+        this.mTutorialInfoTextPosition = infoTextPosition;
+        
+        return this;
+    }
+
+    public void setTutorialGotItPosition(int gotItPosition) {
+        this.mTutorialGotItPosition = gotItPosition;
+    }
+
     public Tutorial build(){
         Tutorial tutorial = new Tutorial();
 
@@ -173,6 +197,8 @@ public class TutorialBuilder  {
         tutorial.setAnimationDuration(mAnimationDuration);
         tutorial.setAnimationType(mAnimationType);
         tutorial.setTutorialTextTypeFace(mTutorialTextTypeFaceName);
+        tutorial.setTutorialInfoTextPosition(mTutorialInfoTextPosition);
+        tutorial.setTutorialGotItPosition(mTutorialGotItPosition);
         
         return tutorial;
     }

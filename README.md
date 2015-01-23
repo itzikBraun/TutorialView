@@ -3,23 +3,26 @@
 
 ![alt tag](http://raw.github.com/ItzikBraun/TutorialView/master/screen_shots/example.gif)
 
-An Android library project providing Activity with explenation about views in your app.
+An Android library project providing `Activity` with explanation about views in your app.
 
-The TutorialActivity can be used as a walk through for the entire screen that is currently visible, Or just for one view on the screen.
+The `TutorialActivity` can be used as a walk through for the entire screen that is currently visible, Or just for one view on the screen.
 
-To get the intent to start the TutorialActivity you need to use the TutorialIntentBuilder, The builder will help you build the intent to start the activity, You would have to pass a Tutorial object to the intent builder.
+To get the intent to start the `TutorialActivity` you need to use the `TutorialIntentBuilder`,
+The builder will help you build the intent to start the activity, You would have to pass a `Tutorial` object to the intent builder.
 
 ###Usage
 ####Tutorial
-The tutorial object holds the tutorial info and attributes. You can create a Tutorial by using the TutorialBuilder.
+The tutorial object holds the tutorial info and attributes. You can create a Tutorial by using the `TutorialBuilder`.
 You can customize the following:
-* Title - Will apear on the top of the view, If the view that is surrounded is on top it will be shown below it.
-* TutorialText - The explanation of about the view, It will apear above or below the view.
+* Title - Will appear on the top of the view, If the view that is surrounded is on top it will be shown below it.
+* TutorialText - The explanation of about the view, It will appear above or below the view.
 * BackgroundColor - The background color of the view.
-* TutorialTextSize - The size that will be used for the tutorial explantion text.
+* TutorialTextSize - The size that will be used for the tutorial explanation text.
 * TypefaceName - The path to the wanted typeface to use for all text view in the tutorial, Example: "/fonts/arial.ttf".
 * AnimationDuration - the duration time in milliseconds that will be used for the animation.
-* ~~AnimatinType - the animation that will be used for showing and hiding the tutorial~~ This is a work in progress currently not working.
+* InfoPosition - The position of the info text, This could be Above, Below, LeftOf and Right of all relevant to the view that need to be surrounded. Values are stored in `Tutorial.InfoPosition`
+* GotItPosition - The position of the "GotIt" button, This could be Top(If has title it will be below it) and Bottom. Values are stored in `Tutorial.GotItPosition`
+* ~~AnimationType - the animation that will be used for showing and hiding the tutorial~~ This is a work in progress currently not working.
 
 Each tutorial that was passed holds it's position on screen, title, background color, the text explenation and more customizable attributes.
 
@@ -66,7 +69,7 @@ overridePendingTransition(R.anim.dummy, R.anim.dummy);
 ```
 
 ####Important!
-You should override the activity pending transition aniamtion like this, If you wont override it the TutorialActivity would animate itself in and will ruin the view animation. (Call it after you call startActivity(Intent) ).
+You should override the `Activity` pending transition animation like this, If you wont override it the `TutorialActivity` would animate itself in and will ruin the view animation. (Call it after you call `startActivity(Intent)` ).
 
 
 ``` java
@@ -92,7 +95,7 @@ include':tutorial_view'
 ```
 
 ###TODO:
-* Return result when TutorialActivity finishes so you could know when it was done and if was skipped.
+* Return result when `TutorialActivity` finishes so you could know when it was done and if was skipped.
 
 ###Author
 [Itzik Braun - Google+](https://plus.google.com/+ItzikBraunster)

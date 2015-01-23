@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.braunster.tutorialview.TutorialInterface;
 import com.braunster.tutorialview.view.AbstractTutorialView;
@@ -20,6 +21,20 @@ public class Tutorial implements Parcelable , TutorialInterface {
      * */
     private String mInfoText;
 
+    /**
+     * Holds the value that will be used for placing the info text in the tutorial view.
+     * 
+     * @see com.braunster.tutorialview.object.Tutorial.InfoPosition 
+     */
+    private int mTutorialInfoTextPosition = InfoPosition.AUTO;
+
+    /**
+     * Holds the value that will be used for placing the "GotIt" button in the tutorial view.
+     *
+     * @see com.braunster.tutorialview.object.Tutorial.GotItPosition
+     */
+    private int mTutorialGotItPosition = GotItPosition.AUTO;
+    
     private float mPositionToSurroundX, mPositionToSurroundY;
     private int mPositionToSurroundWidth, mPositionToSurroundHeight;
 
@@ -186,6 +201,26 @@ public class Tutorial implements Parcelable , TutorialInterface {
     }
 
     @Override
+    public void setTutorialInfoTextPosition(int infoTextPosition) {
+        this.mTutorialInfoTextPosition = infoTextPosition;
+    }
+
+    @Override
+    public int getTutorialInfoTextPosition() {
+        return mTutorialInfoTextPosition;
+    }
+
+    @Override
+    public void setTutorialGotItPosition(int gotItPosition) {
+        this.mTutorialGotItPosition = gotItPosition;
+    }
+
+    @Override
+    public int getTutorialGotItPosition() {
+        return mTutorialGotItPosition;
+    }
+
+    @Override
     public void setAnimationDuration(long mAnimationDuration) {
         this.mAnimationDuration = mAnimationDuration;
     }
@@ -194,7 +229,6 @@ public class Tutorial implements Parcelable , TutorialInterface {
     public void setTutorialTextTypeFace(String mTutorialTextTypeFaceName) {
         this.mTutorialTextTypeFaceName = mTutorialTextTypeFaceName;
     }
-
     
     public String getTutorialTextTypeFace() {
         return mTutorialTextTypeFaceName;
@@ -217,6 +251,8 @@ public class Tutorial implements Parcelable , TutorialInterface {
         this.mTutorialTextTypeFaceName = in.readString();
         this.mTutorialTextColor = in.readInt();
         this.mTutorialTextSize = in.readInt();
+        this.mTutorialInfoTextPosition = in.readInt();
+        this.mTutorialGotItPosition = in.readInt();
     }
 
     public static final Parcelable.Creator<Tutorial> CREATOR
@@ -250,5 +286,41 @@ public class Tutorial implements Parcelable , TutorialInterface {
         dest.writeString(mTutorialTextTypeFaceName);
         dest.writeInt(mTutorialTextColor);
         dest.writeInt(mTutorialTextSize);
+        dest.writeInt(mTutorialInfoTextPosition);
+        dest.writeInt(mTutorialGotItPosition);
+    }
+
+
+    /**
+     * Static values representing available positions for placing the info text in the TutorialView.
+     *
+     * @see Tutorial#mTutorialInfoTextPosition
+     **/
+    public class InfoPosition{
+        public static final int AUTO = -1991, LEFT_OF = RelativeLayout.LEFT_OF, RIGHT_OF = RelativeLayout.RIGHT_OF, ABOVE = RelativeLayout.ABOVE, BELOW = RelativeLayout.BELOW;
+    }
+
+    /**
+     * Static values representing available positions for placing the "GotIt" button in the TutorialView.
+     *
+     * @see Tutorial#mTutorialGotItPosition
+     **/
+    public class GotItPosition{
+
+        /**
+         * The "GotIt" button position will be automatically calculated according to the view to surround position.
+         **/
+        public static final int AUTO = -1991;
+        
+        /** 
+         * Set the "GotIt" button to be in the top part of the tutorial,
+         * If the tutorial has a title then the button will be placed below it.
+         **/
+        public static final int TOP = 0;
+        
+        /**
+         * Set the position of the "GotIt" button to be at the bottom of the tutorial.
+         **/
+        public static final int BOTTOM = 1;
     }
 }

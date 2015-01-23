@@ -44,7 +44,6 @@ public class TutorialIntentBuilder {
     }
 
 
-
     public TutorialIntentBuilder hasStatusBar(boolean hasStatusBar){
         intent.putExtra(HAS_STATUS_BAR, hasStatusBar);
         return this;
