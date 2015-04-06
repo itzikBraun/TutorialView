@@ -1,6 +1,8 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-TutorialView-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1408)
 ##TutorialView
 
+[![Join the chat at https://gitter.im/itzikBraun/TutorialView](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/itzikBraun/TutorialView?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ![alt tag](http://raw.github.com/ItzikBraun/TutorialView/master/screen_shots/example.gif)
 
 An Android library project providing `Activity` with explanation about views in your app.
