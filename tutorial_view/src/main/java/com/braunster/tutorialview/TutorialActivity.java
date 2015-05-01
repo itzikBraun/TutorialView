@@ -1,11 +1,16 @@
 package com.braunster.tutorialview;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.braunster.tutorialview.object.Tutorial;
 import com.braunster.tutorialview.object.TutorialIntentBuilder;
 import com.braunster.tutorialview.view.TutorialLayout;
 import com.braunster.tutorialview.view.TutorialView;
+
+import java.util.ArrayList;
 
 /**
  * Created by braunster on 02/12/14.
@@ -16,6 +21,12 @@ public class TutorialActivity extends Activity {
     public static final boolean DEBUG = true;
 
     private TutorialLayout mTutorialLayout;
+
+    private Tutorial mTutorial;
+
+    private int mCurrentTutorialPos = 0;
+
+    private static final String CURRENT_TUTORIAL = "current_tutorial";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +41,43 @@ public class TutorialActivity extends Activity {
             throw new NullPointerException("You must provide extras to the activity to set up the tutorial view.");
         }
 
+        mTutorialLayout.setHasStatusBar(TutorialIntentBuilder.hasStatusBar(getIntent()));
+
+        mTutorial = TutorialIntentBuilder.getTutorial(getIntent());
+
+        if (TutorialIntentBuilder.isWalkThrough(getIntent()))
+        {
+            ArrayList<Tutorial> tutorials = TutorialIntentBuilder.getWalkThroughData(getIntent());
+
+            // If the activity is re created we should start
+            // from the last tutorial that was visible
+            if (savedInstanceState != null)
+            {
+                mCurrentTutorialPos = savedInstanceState.getInt(CURRENT_TUTORIAL);
+
+                if (DEBUG) Log.d(TAG, String.format("mCurrentTutorialPos: %s, Tutorial list size: %s",
+                        mCurrentTutorialPos, tutorials.size()));
+
+                // Removing tutorials that was already shown.
+                int i = 0;
+                while (i < mCurrentTutorialPos)
+                {
+                    i++;
+                    tutorials.remove(0);
+                }
+
+                // Setting the current tutorial to be the new first tutorial
+                mTutorial = tutorials.get(0);
+            }
+
+            mTutorialLayout.setWalkThroughData(tutorials);
+        }
+        else
+        {
+            mTutorialLayout.setTutorial(mTutorial, false);
+        }
+
+
         // Finish the activity when the tutorial is closed.
         mTutorialLayout.setTutorialClosedListener(new TutorialView.TutorialClosedListener() {
             @Override
@@ -37,6 +85,8 @@ public class TutorialActivity extends Activity {
                 finish();
             }
         });
+
+        updateSystemUIColors();
     }
 
     /**
@@ -52,8 +102,6 @@ public class TutorialActivity extends Activity {
                 @Override
                 public void run() {
                     {
-                        TutorialIntentBuilder.updateTutorialViewFromIntent(mTutorialLayout, getIntent());
-
                         TutorialIntentBuilder.showTutorial(mTutorialLayout, getIntent());
 
                         // If the tutorial is a walk through we would need to set a WalkThroughListener.
@@ -61,13 +109,19 @@ public class TutorialActivity extends Activity {
                         {
                             mTutorialLayout.setWalkThroughListener(new TutorialLayout.WalkThroughListener() {
                                 @Override
-                                public void onNextTutorialShown() {
+                                public void onNextTutorialShown(Tutorial tutorial) {
 
+                                    // Keeping track of the position in the tutorial list.
+                                    // Used for a situation that the activity was killed and we need
+                                    // to re-create it from the last visible tutorial.
+                                    mCurrentTutorialPos++;
+
+                                    mTutorial = tutorial;
+                                    updateSystemUIColors();
                                 }
 
                                 @Override
                                 public void onWalkTroughSkipped() {
-//                                    Toast.makeText(TutorialActivity.this, "Walk through was skipped.", Toast.LENGTH_LONG).show();
                                     finish();
                                 }
 
@@ -80,6 +134,13 @@ public class TutorialActivity extends Activity {
                     }
                 }
             });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(CURRENT_TUTORIAL, mCurrentTutorialPos);
     }
 
     /**
@@ -102,4 +163,23 @@ public class TutorialActivity extends Activity {
         else mTutorialLayout.closeTutorial();
     }
 
+    private void updateSystemUIColors(){
+
+        if (isFinishing())
+            return;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+            if (isDestroyed())
+                return;
+
+        // coloring the status bar and navigation bar from lollipop.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            if (TutorialIntentBuilder.changesSystemUiColors(getIntent()) && mTutorial != null)
+            {
+                getWindow().setStatusBarColor(mTutorial.getTutorialBackgroundColor());
+                getWindow().setNavigationBarColor(mTutorial.getTutorialBackgroundColor());
+            }
+        }
+    }
 }

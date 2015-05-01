@@ -240,7 +240,7 @@ public class TutorialLayout extends RelativeLayout implements TutorialViewInterf
     @Override
     public void nextTutorial(Tutorial tutorial) {
         setTutorial(tutorial, true);
-        dispatchNextTutorialShown();
+        dispatchNextTutorialShown(tutorial);
     }
 
     @Override
@@ -327,9 +327,9 @@ public class TutorialLayout extends RelativeLayout implements TutorialViewInterf
             walkThroughListener.onWalkTroughSkipped();
     }
 
-    private void dispatchNextTutorialShown(){
+    private void dispatchNextTutorialShown(Tutorial tutorial){
         if (walkThroughListener != null)
-            walkThroughListener.onNextTutorialShown();
+            walkThroughListener.onNextTutorialShown(tutorial);
     }
 
     private void dispatchWalkThroughDone(){
@@ -340,7 +340,7 @@ public class TutorialLayout extends RelativeLayout implements TutorialViewInterf
 
 
     public interface WalkThroughListener {
-        public void onNextTutorialShown();
+        public void onNextTutorialShown(Tutorial tutorial);
 
         public void onWalkTroughSkipped();
 

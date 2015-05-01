@@ -168,8 +168,9 @@ public class TutorialBuilder  {
         return this;
     }
 
-    public void setTutorialGotItPosition(int gotItPosition) {
+    public TutorialBuilder setTutorialGotItPosition(int gotItPosition) {
         this.mTutorialGotItPosition = gotItPosition;
+        return this;
     }
 
     public Tutorial build(){

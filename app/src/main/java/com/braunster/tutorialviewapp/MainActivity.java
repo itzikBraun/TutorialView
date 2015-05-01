@@ -52,6 +52,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
         tutorialView.setTutorialTextTypeFace("fonts/roboto_light.ttf");
         tutorialView.setHasStatusBar(true);
         tutorialView.setTutorialText("This is some general text that is not that long but also not so short.");
+
+        // Only show the walk through when the activity is first created.
+        if (savedInstanceState == null)
+            startWalkThrough();
     }
 
     @Override
@@ -138,5 +142,49 @@ public class MainActivity extends Activity implements View.OnClickListener {
         // Override the default animation of the entering activity.
         // This will allow the nice wrapping of the view by the tutorial activity.
         overridePendingTransition(R.anim.dummy, R.anim.dummy);
+    }
+
+    private void startWalkThrough(){
+
+        // Running a walk through as the activity is opened, Tutorial
+        // building should be wrapped in a runnable that is posted so
+        // all views will have their positions on the screen.
+        getWindow().getDecorView().post(new Runnable() {
+            @Override
+            public void run() {
+
+                Tutorial t1 = getBasicBuilderForTest(findViewById(R.id.view_bottom_left))
+                        .setTutorialInfoTextPosition(Tutorial.InfoPosition.ABOVE)
+                        .setTutorialGotItPosition(Tutorial.GotItPosition.BOTTOM)
+                        .build();
+
+                Tutorial t2 = getBasicBuilderForTest(findViewById(R.id.view_top_right))
+                        .setTutorialInfoTextPosition(Tutorial.InfoPosition.LEFT_OF)
+                        .build();
+
+                Tutorial t3 = getBasicBuilderForTest(findViewById(R.id.view_almost_top_right))
+                        .setTutorialInfoTextPosition(Tutorial.InfoPosition.RIGHT_OF)
+                        .build();
+
+                Tutorial t4 = getBasicBuilderForTest(findViewById(R.id.view_top_left))
+                        .setTutorialInfoTextPosition(Tutorial.InfoPosition.BELOW)
+                        .build();
+
+                Tutorial t5 = getBasicBuilderForTest(findViewById(R.id.view_center))
+                        .setTutorialInfoTextPosition(Tutorial.InfoPosition.BELOW)
+                        .setTutorialGotItPosition(Tutorial.GotItPosition.BOTTOM)
+                        .build();
+
+
+                TutorialIntentBuilder builder = new TutorialIntentBuilder(MainActivity.this);
+
+                builder.setWalkThroughList(t1, t2, t3, t4, t5);
+                startActivity(builder.getIntent());
+
+                // Override the default animation of the entering activity.
+                // This will allow the nice wrapping of the view by the tutorial activity.
+                overridePendingTransition(R.anim.dummy, R.anim.dummy);
+            }
+        });
     }
 }

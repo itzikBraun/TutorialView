@@ -18,7 +18,7 @@ import java.util.Arrays;
 public class TutorialIntentBuilder {
 
     public static final String TAG = TutorialIntentBuilder.class.getSimpleName();
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
 
     private static final String TUTORIAL_OBJ = "tutorial_obj";
 
@@ -27,6 +27,8 @@ public class TutorialIntentBuilder {
     private static final String WALK_THROUGH_DATA = "walk_through_data";
 
     private static final String SKIP_TUTORIAL_ON_BACK_PRESSED = "skip_tutorial_on_back_pressed";
+
+    private static final String CHANGE_SYSTEM_UI_COLOR = "change_system_ui_colors";
 
     private Intent intent;
 
@@ -43,6 +45,14 @@ public class TutorialIntentBuilder {
         this.intent = intent;
     }
 
+    /**
+     * Change the color of the status and navigation bars on devices running API 21 (Lollipop) and up.
+     * * * */
+    public TutorialIntentBuilder changeSystemUiColor(boolean change){
+        intent.putExtra(CHANGE_SYSTEM_UI_COLOR, change);
+
+        return this;
+    }
 
     public TutorialIntentBuilder hasStatusBar(boolean hasStatusBar){
         intent.putExtra(HAS_STATUS_BAR, hasStatusBar);
@@ -78,11 +88,31 @@ public class TutorialIntentBuilder {
         return this;
     }
 
+
     /**
      *  @return the intent that was build and populated with all attributes.
      * */
     public Intent getIntent(){
         return intent;
+    }
+
+
+
+
+
+
+
+
+    public static boolean changesSystemUiColors(Intent intent){
+        return intent.getBooleanExtra(CHANGE_SYSTEM_UI_COLOR, true);
+    }
+
+    /**
+     * @return the value passed in the intent, Default value is true as most apps has a status bar.
+     * */
+    public static boolean hasStatusBar(Intent intent){
+        return intent.getBooleanExtra(HAS_STATUS_BAR, true);
+
     }
 
     /**
@@ -107,6 +137,9 @@ public class TutorialIntentBuilder {
 
             if (intent.getExtras().containsKey(WALK_THROUGH_DATA))
             {
+                ArrayList<Tutorial> tutorials = intent.getExtras().getParcelableArrayList(WALK_THROUGH_DATA);
+
+                ((WalkThroughInterface) tutorial).setWalkThroughData(tutorials);
                 ((WalkThroughInterface) tutorial).startWalkThrough();
                 return;
             }
@@ -127,19 +160,44 @@ public class TutorialIntentBuilder {
     }
 
     /**
-     * Setup tutorial from data saved in the intent.
+     * @return true if the intent contains a walk through data (List of tutorials)
      * */
-    public static void updateTutorialViewFromIntent(final TutorialViewInterface tutorial, Intent intent){
-        tutorial.setHasStatusBar(intent.getBooleanExtra(HAS_STATUS_BAR, true));
+    public static boolean isWalkThrough(Intent intent){
+        if (intent.getExtras().containsKey(WALK_THROUGH_DATA))
+            return true;
 
-        /**
-         * Update the tutorial with data from the intent.
-         * */
-        if (intent.getExtras().containsKey(TUTORIAL_OBJ))
-        {
-            tutorial.setTutorial((Tutorial) intent.getParcelableExtra(TUTORIAL_OBJ), false);
-        }
-        else throw new IllegalArgumentException("You must pass at least on Tutorial object to the intent builder.");
+
+        return false;
     }
 
+    /**
+     * Get the tutorial passed in the intent, If a list of tutorial had been passed as
+     * a walk through the first in the list will be returned.
+     * */
+    public static Tutorial getTutorial(Intent intent){
+
+        // Showing the first tutorial in the list.
+        if (intent.getExtras().containsKey(WALK_THROUGH_DATA))
+        {
+            ArrayList<Tutorial> tutorials = intent.getExtras().getParcelableArrayList(WALK_THROUGH_DATA);
+
+            return tutorials.get(0);
+        }
+        else return (Tutorial) intent.getParcelableExtra(TUTORIAL_OBJ);
+
+    }
+
+    /**
+     * Getting the list of tutorials that will be used for the walk through
+     * */
+    public static ArrayList<Tutorial> getWalkThroughData(Intent intent){
+        if (intent.getExtras().containsKey(WALK_THROUGH_DATA))
+        {
+            ArrayList<Tutorial> tutorials = intent.getExtras().getParcelableArrayList(WALK_THROUGH_DATA);
+
+            return tutorials;
+        }
+
+        return new ArrayList<>();
+    }
 }
