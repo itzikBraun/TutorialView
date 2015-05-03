@@ -84,4 +84,16 @@
         android:layout_marginTop="50dp"
         android:id="@+id/view_top_right"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:id="@+id/txt_version"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="V"/>
+
 </RelativeLayout>

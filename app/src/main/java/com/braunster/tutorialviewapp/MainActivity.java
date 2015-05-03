@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 
 import com.braunster.tutorialview.object.Tutorial;
 import com.braunster.tutorialview.object.TutorialBuilder;
@@ -30,6 +31,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
 //        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.activity_main);
+
+        // Setting the version name.
+        ((TextView) findViewById(R.id.txt_version)).setText(String.format("Version: %s", BuildConfig.VERSION_NAME));
+
+
         tutorialView = (TutorialView) findViewById(R.id.tutorial_view);
 
         findViewById(R.id.view_bottom_left).setOnClickListener(this);
@@ -40,6 +46,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         if (getActionBar() != null)
             getActionBar().setBackgroundDrawable(new ColorDrawable(Color.DKGRAY));
+
 
         //Using the tutorial view
         // This is used for the tutorial view that should be in your root view.

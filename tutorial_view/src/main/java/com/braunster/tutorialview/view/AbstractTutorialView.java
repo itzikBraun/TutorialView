@@ -523,7 +523,7 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
     /**
      * OnClickListener for hiding the tutorial when clicked.
      * */
-    private OnClickListener closeTutorialClickListener = new OnClickListener() {
+    private final OnClickListener closeTutorialClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             closeTutorial();
@@ -533,7 +533,7 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
     /**
      * OnClickListener for skipping the walk through tutorial.
      * */
-    private OnClickListener skipWalkThroughClickListener = new OnClickListener() {
+    private final OnClickListener skipWalkThroughClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             ((WalkThroughInterface) getParent()).skip();
@@ -782,9 +782,9 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
     }
 
     /**
-     * Posted on the tutorial info view to do ajustment and animation to the view.
+     * Posted on the tutorial info view to do adjustment and animation to the view.
      * */
-    private Runnable tutorialInfoViewPost = new Runnable() {
+    private final Runnable tutorialInfoViewPost = new Runnable() {
         
         RelativeLayout.LayoutParams skipButtonParams = null;
         RelativeLayout.LayoutParams titleParams = null;

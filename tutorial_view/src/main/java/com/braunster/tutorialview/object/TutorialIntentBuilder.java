@@ -18,7 +18,7 @@ import java.util.Arrays;
 public class TutorialIntentBuilder {
 
     public static final String TAG = TutorialIntentBuilder.class.getSimpleName();
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = Debug.TutorialIntentBuilder;
 
     private static final String TUTORIAL_OBJ = "tutorial_obj";
 
@@ -30,7 +30,7 @@ public class TutorialIntentBuilder {
 
     private static final String CHANGE_SYSTEM_UI_COLOR = "change_system_ui_colors";
 
-    private Intent intent;
+    private final Intent intent;
 
     public TutorialIntentBuilder(Context context){
         intent = new Intent(context, TutorialActivity.class );
@@ -193,9 +193,7 @@ public class TutorialIntentBuilder {
     public static ArrayList<Tutorial> getWalkThroughData(Intent intent){
         if (intent.getExtras().containsKey(WALK_THROUGH_DATA))
         {
-            ArrayList<Tutorial> tutorials = intent.getExtras().getParcelableArrayList(WALK_THROUGH_DATA);
-
-            return tutorials;
+            return intent.getExtras().getParcelableArrayList(WALK_THROUGH_DATA);
         }
 
         return new ArrayList<>();

@@ -15,15 +15,15 @@ import android.view.animation.Transformation;
  */
 public class RippleTutorialView extends AbstractTutorialView {
 
-    public static final String TAG = RippleTutorialView.class.getSimpleName();
-    public static final boolean DEBUG = false;
+    private static final String TAG = RippleTutorialView.class.getSimpleName();
+    private static final boolean DEBUG = false;
 
     private int mAnimatedRadius = -1;
 
     private int mAnimationRadiusMax = -1;
 
-    private static PorterDuffXfermode sXfermodeClear = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
-    private static PorterDuffXfermode sXfermodeNormal = new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER);
+    private static final PorterDuffXfermode sXfermodeClear = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
+    private static final PorterDuffXfermode sXfermodeNormal = new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER);
 
     public RippleTutorialView(Context context) {
         super(context);
@@ -76,6 +76,8 @@ public class RippleTutorialView extends AbstractTutorialView {
         return super.shouldDraw() && showing && mAnimatedRadius != -1;
     }
 
+    // To remove a warning regrading using maxHeight as an x parameter.
+    @SuppressWarnings("all")
     @Override
     public  void beforeFirstDraw(){
         if (DEBUG) Log.d(TAG, "FirstDraw, Width: " + getMeasuredWidth() + ", Height: " + getMeasuredHeight());

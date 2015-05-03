@@ -92,12 +92,14 @@ dependencies {
 
 You can also copy past it to your project and before adding it to your dependencies you need to add it to *settings.gradle* so the system will understand it's a module like this:
 ```
-// Notice that in your settings file there would be more names so dont delete them, This are your other modules.
+// Notice that in your settings file there would be more names so don't delete them, This are your other modules.
 include':tutorial_view'
 ```
 
 ###TODO:
 * Return result when `TutorialActivity` finishes so you could know when it was done and if was skipped.
+* add the roboto font family to the app assets so it will work on lower versions
+* Make a sample app and publish it on Google Play
 
 ###Author
 [Itzik Braun - Google+](https://plus.google.com/+ItzikBraunster)

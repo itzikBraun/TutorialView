@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.braunster.tutorialview.object.Debug;
 import com.braunster.tutorialview.object.Tutorial;
 import com.braunster.tutorialview.object.TutorialIntentBuilder;
 import com.braunster.tutorialview.view.TutorialLayout;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 public class TutorialActivity extends Activity {
 
     public static final String TAG = TutorialActivity.class.getSimpleName();
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = Debug.TutorialActivity;
 
     private TutorialLayout mTutorialLayout;
 
@@ -28,9 +29,13 @@ public class TutorialActivity extends Activity {
 
     private static final String CURRENT_TUTORIAL = "current_tutorial";
 
+    private Bundle savedInstanceState;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.savedInstanceState = savedInstanceState;
 
         setContentView(R.layout.activity_tutorial_layout);
 
@@ -45,6 +50,25 @@ public class TutorialActivity extends Activity {
 
         mTutorial = TutorialIntentBuilder.getTutorial(getIntent());
 
+        // Finish the activity when the tutorial is closed.
+        mTutorialLayout.setTutorialClosedListener(new TutorialView.TutorialClosedListener() {
+            @Override
+            public void onClosed() {
+                finish();
+            }
+        });
+
+        updateSystemUIColors();
+    }
+
+    /**
+     * Need to wait until the window get focused before doing the animation.
+     * Also it is good to post it.
+     * */
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        
         if (TutorialIntentBuilder.isWalkThrough(getIntent()))
         {
             ArrayList<Tutorial> tutorials = TutorialIntentBuilder.getWalkThroughData(getIntent());
@@ -76,26 +100,6 @@ public class TutorialActivity extends Activity {
         {
             mTutorialLayout.setTutorial(mTutorial, false);
         }
-
-
-        // Finish the activity when the tutorial is closed.
-        mTutorialLayout.setTutorialClosedListener(new TutorialView.TutorialClosedListener() {
-            @Override
-            public void onClosed() {
-                finish();
-            }
-        });
-
-        updateSystemUIColors();
-    }
-
-    /**
-     * Need to wait until the window get focused before doing the animation.
-     * Also it is good to post it.
-     * */
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
 
         if (hasFocus && !mTutorialLayout.isShowing())
             mTutorialLayout.post(new Runnable() {
