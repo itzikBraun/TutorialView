@@ -1,6 +1,8 @@
 package com.braunster.tutorialview;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +38,8 @@ public class TutorialActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         this.savedInstanceState = savedInstanceState;
+
+        lockOrientation();
 
         setContentView(R.layout.activity_tutorial_layout);
 
@@ -184,6 +188,44 @@ public class TutorialActivity extends Activity {
                 getWindow().setStatusBarColor(mTutorial.getTutorialBackgroundColor());
                 getWindow().setNavigationBarColor(mTutorial.getTutorialBackgroundColor());
             }
+        }
+    }
+
+    /**
+     * Locking the orientation so the activity will stay in the same orientation as it was entered.
+     * The position of the place that need to stay visible is pre-calculated so currently there
+     * is no other way to handle orientation changes.
+     *
+     * Code was taken from this stackoverflow answer:
+     * http://stackoverflow.com/a/8450316/2568492
+     * */
+    private void lockOrientation(){
+        switch (getResources().getConfiguration().orientation){
+            case Configuration.ORIENTATION_PORTRAIT:
+                if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.FROYO){
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                } else {
+                    int rotation = getWindowManager().getDefaultDisplay().getRotation();
+                    if(rotation == android.view.Surface.ROTATION_90|| rotation == android.view.Surface.ROTATION_180){
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
+                    } else {
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    }
+                }
+                break;
+
+            case Configuration.ORIENTATION_LANDSCAPE:
+                if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.FROYO){
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                } else {
+                    int rotation = getWindowManager().getDefaultDisplay().getRotation();
+                    if(rotation == android.view.Surface.ROTATION_0 || rotation == android.view.Surface.ROTATION_90){
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    } else {
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+                    }
+                }
+                break;
         }
     }
 }
