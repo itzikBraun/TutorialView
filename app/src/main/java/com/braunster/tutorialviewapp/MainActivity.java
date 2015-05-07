@@ -1,13 +1,16 @@
 package com.braunster.tutorialviewapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.braunster.tutorialview.TutorialActivity;
 import com.braunster.tutorialview.object.Tutorial;
 import com.braunster.tutorialview.object.TutorialBuilder;
 import com.braunster.tutorialview.object.TutorialIntentBuilder;
@@ -19,6 +22,11 @@ import java.util.Random;
 public class MainActivity extends Activity implements View.OnClickListener {
 
     private TutorialView tutorialView;
+
+    private static final int TUTORIAL_REQUEST = 1991;
+
+    // For switching between startActivityForResult and startActivity
+    private boolean startTutorialForResult = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +80,40 @@ public class MainActivity extends Activity implements View.OnClickListener {
         return true;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == TUTORIAL_REQUEST)
+        {
+            boolean isWalkThrough = data.getBooleanExtra(TutorialActivity.IS_WALKTHROUGH, false);
+
+            if (resultCode == RESULT_OK)
+            {
+                if (isWalkThrough)
+                    Toast.makeText(this, "The walkthrough was viewed fully", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(this, "The user GotIt", Toast.LENGTH_SHORT).show();
+            }
+            else if (resultCode == RESULT_CANCELED)
+            {
+                if (isWalkThrough)
+                {
+                    Toast.makeText(this,
+                            String.format("Tutorial was skipped, User viewed %s Tutorials", data.getIntExtra(TutorialActivity.VIEWED_TUTORIALS, 0)),
+                            Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(this,
+                            "Tutorial was skipped" ,
+                            Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }
+    }
+
     private int randomColor(){
         Random rnd = new Random();
         return  Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
@@ -104,6 +146,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
 
         TutorialIntentBuilder builder = new TutorialIntentBuilder(MainActivity.this);
+
+        // if true the status bar and navigation bar will be colored on Lollipop devices.
+        builder.changeSystemUiColor(true);
 
         TutorialBuilder tBuilder = getBasicBuilderForTest(v);
         
@@ -144,7 +189,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         builder.setTutorial(tBuilder.build());
 
-        startActivity(builder.getIntent());
+        if (startTutorialForResult)
+            startActivityForResult(builder.getIntent(), TUTORIAL_REQUEST);
+        else
+            startActivity(builder.getIntent());
 
         // Override the default animation of the entering activity.
         // This will allow the nice wrapping of the view by the tutorial activity.
@@ -185,8 +233,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
                 TutorialIntentBuilder builder = new TutorialIntentBuilder(MainActivity.this);
 
+                // if true the status bar and navigation bar will be colored on Lollipop devices.
+                builder.changeSystemUiColor(true);
+
                 builder.setWalkThroughList(t1, t2, t3, t4, t5);
-                startActivity(builder.getIntent());
+
+                if (startTutorialForResult)
+                    startActivityForResult(builder.getIntent(), TUTORIAL_REQUEST);
+                else
+                    startActivity(builder.getIntent());
 
                 // Override the default animation of the entering activity.
                 // This will allow the nice wrapping of the view by the tutorial activity.

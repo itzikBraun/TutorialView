@@ -5,12 +5,16 @@
 
 ![alt tag](http://raw.github.com/ItzikBraun/TutorialView/master/screen_shots/example.gif)
 
-An Android library project providing `Activity` with explanation about views in your app.
+An Android library project providing `Activity` with an explanation about views in your app.
 
-The `TutorialActivity` can be used as a walk through for the entire screen that is currently visible, Or just for one view on the screen.
+The `TutorialActivity` can be used as a walkthrough for the entire screen that is currently visible, Or just for one view on the screen.
 
 To get the intent to start the `TutorialActivity` you need to use the `TutorialIntentBuilder`,
 The builder will help you build the intent to start the activity, You would have to pass a `Tutorial` object to the intent builder.
+
+If you use any kind of analytics to track your user behavior in your app you can start the `TutorialActivity` for result and
+so when it returns you can collect the data whether the user skipped the tutorials or watched it fully.
+You can also retrieve the amount of tutorials the user have viewed before skipping the walkthrough using `TutorialActivity.VIEWED_TUTORIALS`.
 
 ###Usage
 ####Tutorial
@@ -23,11 +27,16 @@ You can customize the following:
 * TypefaceName - The path to the wanted typeface to use for all text view in the tutorial, Example: "/fonts/arial.ttf".
 * AnimationDuration - the duration time in milliseconds that will be used for the animation.
 * InfoPosition - The position of the info text, This could be Above, Below, LeftOf and Right of all relevant to the view that need to be surrounded. Values are stored in `Tutorial.InfoPosition`
-* GotItPosition - The position of the "GotIt" button, This could be Top(If has title it will be below it) and Bottom. Values are stored in `Tutorial.GotItPosition`
+* GotItPosition - The position of the "GotIt" button, This could be Top(If has a title it will be below it) and Bottom. Values are stored in `Tutorial.GotItPosition`
 * ~~AnimationType - the animation that will be used for showing and hiding the tutorial~~ This is a work in progress currently not working.
 
-Each tutorial that was passed holds it's position on screen, title, background color, the text explenation and more customizable attributes.
+Each tutorial that was passed holds it's position on the screen, title, background color, the text explanation and more customizable attributes.
+By default the "StatusBar" and the "NavigationBar" are also being colored on Lollipop devices, You can change the default behavior by using:
+```
+TutorialIntentBuilder builder = new TutorialIntentBuilder(MainActivity.this);
 
+builder.changeSystemUiColor(false);
+```       
 ######Example of creating a simple tutorial.
 
 ``` java
@@ -92,12 +101,11 @@ dependencies {
 
 You can also copy past it to your project and before adding it to your dependencies you need to add it to *settings.gradle* so the system will understand it's a module like this:
 ```
-// Notice that in your settings file there would be more names so don't delete them, This are your other modules.
+// Notice that in your settings file there would be more names so don't delete them, Those are your other modules.
 include':tutorial_view'
 ```
 
 ###TODO:
-* Return result when `TutorialActivity` finishes so you could know when it was done and if was skipped.
 * add the roboto font family to the app assets so it will work on lower versions
 * Make a sample app and publish it on Google Play
 

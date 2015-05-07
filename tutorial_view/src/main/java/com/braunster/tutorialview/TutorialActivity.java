@@ -1,6 +1,7 @@
 package com.braunster.tutorialview;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -10,6 +11,7 @@ import android.util.Log;
 import com.braunster.tutorialview.object.Debug;
 import com.braunster.tutorialview.object.Tutorial;
 import com.braunster.tutorialview.object.TutorialIntentBuilder;
+import com.braunster.tutorialview.view.AbstractTutorialView;
 import com.braunster.tutorialview.view.TutorialLayout;
 import com.braunster.tutorialview.view.TutorialView;
 
@@ -33,6 +35,8 @@ public class TutorialActivity extends Activity {
 
     private Bundle savedInstanceState;
 
+    public static final String VIEWED_TUTORIALS= "viewed_tutorials", IS_WALKTHROUGH = "is_tutorial";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,10 +59,11 @@ public class TutorialActivity extends Activity {
         mTutorial = TutorialIntentBuilder.getTutorial(getIntent());
 
         // Finish the activity when the tutorial is closed.
+        // In case the tutorial view is showing a walkthrough this would be ignored.
         mTutorialLayout.setTutorialClosedListener(new TutorialView.TutorialClosedListener() {
             @Override
             public void onClosed() {
-                finish();
+                resultDone();
             }
         });
 
@@ -130,12 +135,12 @@ public class TutorialActivity extends Activity {
 
                                 @Override
                                 public void onWalkTroughSkipped() {
-                                    finish();
+                                    resultSkipped();
                                 }
 
                                 @Override
                                 public void onWalkThroughDone() {
-                                    finish();
+                                    resultDone();
                                 }
                             });
                         }
@@ -164,11 +169,26 @@ public class TutorialActivity extends Activity {
      * */
     @Override
     public void onBackPressed() {
-        if (TutorialIntentBuilder.skipOnBackPressed(getIntent()))
+        // Skipping the walkthrough if requested.
+        if (mTutorialLayout.isWalkThrough() && TutorialIntentBuilder.skipOnBackPressed(getIntent()))
         {
             mTutorialLayout.skip();
         }
-        else mTutorialLayout.closeTutorial();
+        else {
+            // Setting a new TutorialCloseListener so we could return
+            // a result to the calling activity that the tutorial was closed using the back press.
+            if (!mTutorialLayout.isWalkThrough())
+            {
+                mTutorialLayout.setTutorialClosedListener(new AbstractTutorialView.TutorialClosedListener() {
+                    @Override
+                    public void onClosed() {
+                        resultSkipped();
+                    }
+                });
+            }
+
+            mTutorialLayout.closeTutorial();
+        }
     }
 
     private void updateSystemUIColors(){
@@ -227,5 +247,44 @@ public class TutorialActivity extends Activity {
                 }
                 break;
         }
+    }
+
+    private void resultSkipped(){
+
+        if (getCallingActivity() != null)
+        {
+            Intent intent = getResultIntent();
+
+            // Adding the amount of tutorials that was shown before skipping.
+            if (mTutorialLayout.isWalkThrough()){
+                intent.putExtra(VIEWED_TUTORIALS, mCurrentTutorialPos);
+            }
+
+            setResult(RESULT_CANCELED, intent);
+        }
+
+        finish();
+    }
+
+    private void resultDone(){
+
+        if (getCallingActivity() != null)
+        {
+            Intent intent = getResultIntent();
+            setResult(RESULT_OK, intent);
+        }
+
+
+        finish();
+    }
+
+    private Intent getResultIntent(){
+
+
+        Intent intent = new Intent();
+
+        intent.putExtra(IS_WALKTHROUGH, mTutorialLayout.isWalkThrough());
+
+        return intent;
     }
 }

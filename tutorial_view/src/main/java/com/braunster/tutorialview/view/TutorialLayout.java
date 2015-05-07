@@ -102,7 +102,9 @@ public class TutorialLayout extends RelativeLayout implements TutorialViewInterf
     }
 
     /**
-     * Set the listener on the tutorial view, If walk through is used this will be overriden and you should set a {@link com.braunster.tutorialview.view.TutorialLayout.WalkThroughListener WalkThroughListener} instead.
+     * Set the listener on the tutorial view,
+     * If walk through is used this will be overridden and you should set a
+     * {@link com.braunster.tutorialview.view.TutorialLayout.WalkThroughListener WalkThroughListener} instead.
      *
      * @see #setWalkThroughListener(com.braunster.tutorialview.view.TutorialLayout.WalkThroughListener)
      * */
