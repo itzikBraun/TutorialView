@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="TutorialActivityTheme" parent="android:Theme.Material" >
+    <style name="TutorialActivityTheme" parent="Theme.AppCompat" >
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>

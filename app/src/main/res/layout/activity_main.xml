@@ -5,16 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.braunster.tutorialview.view.TutorialView
-        android:layout_width="match_parent"
-        android:id="@+id/tutorial_view"
-        android:layout_height="match_parent"/>
-
     <TextView
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:textSize="30sp"
-
         android:background="@drawable/circle_button"
         android:id="@+id/view_almost_top_right"
         android:gravity="center"
@@ -35,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="30sp"
-            android:background="@android:color/holo_orange_dark"
+            android:background="#321541"
             android:gravity="center"
             android:padding="5dp"
             android:layout_marginBottom="5dp"
@@ -46,7 +40,7 @@
             android:layout_height="wrap_content"
             android:textSize="30sp"
             android:padding="10dp"
-            android:background="@android:color/holo_orange_dark"
+            android:background="#321541"
             android:gravity="center"
             android:text="Center"/>
 
@@ -57,7 +51,7 @@
         android:layout_height="wrap_content"
         android:textSize="30sp"
         android:layout_margin="5dp"
-        android:background="@android:color/holo_purple"
+        android:background="#FF00FF"
         android:padding="5dp"
         android:id="@+id/view_top_left"
         android:gravity="center"
@@ -69,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="T-BL"
-        android:background="@android:color/holo_green_dark"
+        android:background="#854712"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="20dp"
         android:layout_margin="5dp"
@@ -79,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="T-Right"
-        android:background="@android:color/holo_blue_dark"
+        android:background="#0000f1"
         android:layout_alignParentRight="true"
         android:layout_marginTop="50dp"
         android:id="@+id/view_top_right"/>

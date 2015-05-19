@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/C:/Users/Amir/Desktop/TutorialView-master/tutorial_view/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="app_name">TutorialView</string>
+    <string name="got_it_button_text">Got It</string>
+    <string name="skip_button_text">Skip</string>
+    <!-- From: file:/C:/Users/Amir/Desktop/TutorialView-master/tutorial_view/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <style name="TutorialActivityTheme" parent="Theme.AppCompat">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+</resources>

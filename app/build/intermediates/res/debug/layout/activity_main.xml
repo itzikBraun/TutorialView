@@ -1,0 +1,96 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+
+    <TextView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:textSize="30sp"
+        android:background="@drawable/circle_button"
+        android:id="@+id/view_almost_top_right"
+        android:gravity="center"
+        android:layout_marginLeft="100dp"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="50dp"
+        android:text="T"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:id="@+id/view_center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:background="#321541"
+            android:gravity="center"
+            android:padding="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="Test"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:padding="10dp"
+            android:background="#321541"
+            android:gravity="center"
+            android:text="Center"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:layout_margin="5dp"
+        android:background="#FF00FF"
+        android:padding="5dp"
+        android:id="@+id/view_top_left"
+        android:gravity="center"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="T-TL"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="T-BL"
+        android:background="#854712"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="20dp"
+        android:layout_margin="5dp"
+        android:id="@+id/view_bottom_left"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="T-Right"
+        android:background="#0000f1"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="50dp"
+        android:id="@+id/view_top_right"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:id="@+id/txt_version"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="V"/>
+
+</RelativeLayout>
+<!-- From: file:/C:/Users/Amir/Desktop/TutorialView-master/app/src/main/res/layout/activity_main.xml -->

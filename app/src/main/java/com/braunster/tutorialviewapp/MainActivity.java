@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
@@ -19,7 +20,7 @@ import com.braunster.tutorialview.view.TutorialView;
 import java.util.Random;
 
 
-public class MainActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TutorialView tutorialView;
 
@@ -44,7 +45,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         ((TextView) findViewById(R.id.txt_version)).setText(String.format("Version: %s", BuildConfig.VERSION_NAME));
 
 
-        tutorialView = (TutorialView) findViewById(R.id.tutorial_view);
+//        tutorialView = (TutorialView) findViewById(R.id.tutorial_view);
 
         findViewById(R.id.view_bottom_left).setOnClickListener(this);
         findViewById(R.id.view_top_right).setOnClickListener(this);
@@ -52,21 +53,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
         findViewById(R.id.view_top_left).setOnClickListener(this);
         findViewById(R.id.view_center).setOnClickListener(this);
 
-        if (getActionBar() != null)
-            getActionBar().setBackgroundDrawable(new ColorDrawable(Color.DKGRAY));
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.DKGRAY));
 
 
         //Using the tutorial view
         // This is used for the tutorial view that should be in your root view.
         // This may lead to problems when used inside LinearLayout and maybe other view.
         // The best thing to do is to use the TutorialActivity.
-        tutorialView.setActionBarRestoreColor(Color.DKGRAY);
-        tutorialView.changeActionBarColor(true);
-        tutorialView.setActionBar(getActionBar());
-        tutorialView.setHasActionBar(true);
-        tutorialView.setTutorialTextTypeFace("fonts/roboto_light.ttf");
-        tutorialView.setHasStatusBar(true);
-        tutorialView.setTutorialText("This is some general text that is not that long but also not so short.");
+//        tutorialView.setActionBarRestoreColor(Color.DKGRAY);
+//        tutorialView.changeActionBarColor(true);
+//        tutorialView.setActionBar(getSupportActionBar());
+//        tutorialView.setHasActionBar(true);
+//        tutorialView.setTutorialTextTypeFace("fonts/roboto_light.ttf");
+//        tutorialView.setHasStatusBar(true);
+//        tutorialView.setTutorialText("This is some general text that is not that long but also not so short.");
 
         // Only show the walk through when the activity is first created.
         if (savedInstanceState == null)

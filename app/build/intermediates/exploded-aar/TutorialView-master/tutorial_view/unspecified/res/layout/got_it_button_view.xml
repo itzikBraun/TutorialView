@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:text="@string/got_it_button_text"
+    android:padding="10dp"
+    android:textSize="33sp"
+    android:id="@+id/got_it_button_view"
+    android:fontFamily="sans-serif-condensed"
+    android:textColor="@android:color/white"
+    android:layout_height="wrap_content"/><!-- From: file:/C:/Users/Amir/Desktop/TutorialView-master/tutorial_view/src/main/res/layout/got_it_button_view.xml -->
