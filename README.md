@@ -1,4 +1,7 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-TutorialView-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1408)
+
+[![Release](https://img.shields.io/github/release/itzikBraun/TutorialView.svg?label=JitPack)](https://jitpack.io/#itzikBraun/TutorialView)
+
 ##TutorialView
 
 [![Join the chat at https://gitter.im/itzikBraun/TutorialView](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/itzikBraun/TutorialView?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
