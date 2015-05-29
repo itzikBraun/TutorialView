@@ -1,0 +1,7 @@
+C:\Users\Amir\Desktop\TutorialView-master\app\build\intermediates\classes\debug
+C:\Users\Amir\Desktop\TutorialView-master\app\build\intermediates\pre-dexed\debug\support-annotations-22.1.1-15fa82d68202b408e0a06e044dbe718016467e0a.jar
+C:\Users\Amir\Desktop\TutorialView-master\app\build\intermediates\pre-dexed\debug\classes-6fdadd698101c456eb162a0282b804c04605d00d.jar
+C:\Users\Amir\Desktop\TutorialView-master\app\build\intermediates\pre-dexed\debug\library-2.4.0-1eec64b503d91cbf796889c27d4eea214db98a7f.jar
+C:\Users\Amir\Desktop\TutorialView-master\app\build\intermediates\pre-dexed\debug\internal_impl-22.1.1-b126fd87f1ed4a9be5cdcb40aaba03c21e6c578a.jar
+C:\Users\Amir\Desktop\TutorialView-master\app\build\intermediates\pre-dexed\debug\classes-2b2e2ef144321794d6f3c87d63866a36b7fac137.jar
+C:\Users\Amir\Desktop\TutorialView-master\app\build\intermediates\pre-dexed\debug\classes-48340c0a2afb58a42f2df3754ee6e6fafbac49cc.jar

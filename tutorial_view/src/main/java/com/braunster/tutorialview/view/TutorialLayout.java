@@ -1,7 +1,7 @@
 package com.braunster.tutorialview.view;
 
-import android.app.ActionBar;
 import android.content.Context;
+import android.support.v7.app.ActionBar;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;

@@ -1,0 +1,11 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.braunster.tutorialview.view.TutorialLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/tutorial_layout"/>
+</RelativeLayout>
+<!-- From: file:/C:/Users/Amir/Desktop/TutorialView-master/tutorial_view/src/main/res/layout/activity_tutorial_layout.xml -->
