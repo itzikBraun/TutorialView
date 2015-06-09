@@ -626,7 +626,7 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
 
     /**
      * The text that will be used for the {@link TutorialView#mTutorialInfoView mTutorialInfoView}.
-     * <b>Only</b> if the layout that is used is the default layout ({@link com.braunster.tutorialview.R.layout#tutorial_text tutorial_text}).
+     * <b>Only</b> if the layout that is used is the default layout R.layout.tutorial_text.
      *
      * @see TutorialView#setTutorialTextTypeFace(String)
      * @see TutorialView#setTutorialTextColor(int)

@@ -17,8 +17,8 @@ import java.util.Arrays;
  */
 public class TutorialIntentBuilder {
 
-    public static final String TAG = TutorialIntentBuilder.class.getSimpleName();
-    public static final boolean DEBUG = Debug.TutorialIntentBuilder;
+    private static final String TAG = TutorialIntentBuilder.class.getSimpleName();
+    private static final boolean DEBUG = Debug.TutorialIntentBuilder;
 
     private static final String TUTORIAL_OBJ = "tutorial_obj";
 
@@ -46,7 +46,8 @@ public class TutorialIntentBuilder {
     }
 
     /**
-     * Change the color of the status and navigation bars on devices running API 21 (Lollipop) and up.
+     * @param change if true changes the color of the status and navigation
+     *                bars on devices running API 21 (Lollipop) and up.
      * * * */
     public TutorialIntentBuilder changeSystemUiColor(boolean change){
         intent.putExtra(CHANGE_SYSTEM_UI_COLOR, change);

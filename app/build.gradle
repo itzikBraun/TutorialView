@@ -3,23 +3,43 @@ apply plugin: 'com.android.application'
 def versionMajor = 0
 def versionMinor = 8
 def versionPatch = 2
-def versionBuild = 0 // bump for dogfood builds, public betas, etc.
+def versionBuild = 2 // bump for dogfood builds, public betas, etc.
 
 android {
     compileSdkVersion 22
-    buildToolsVersion "21.1.2"
+    buildToolsVersion "22.0.1"
 
     defaultConfig {
         applicationId "com.braunster.tutorialviewapp"
         minSdkVersion 15
         targetSdkVersion 22
 
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+
         versionCode versionMajor * 1000000 + versionMinor * 10000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+    }
+
+    packagingOptions {
+
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'LICENSE.txt'
     }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':tutorial_view')
+
+
+    // App dependencies
+    compile 'com.android.support:support-annotations:22.1.0'
+
+    androidTestCompile 'com.android.support:support-annotations:22.1.0'
+
+    // Testing-only dependencies
+    androidTestCompile 'com.android.support.test:runner:0.2'
+    androidTestCompile 'com.android.support.test:rules:0.2'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.1'
 }

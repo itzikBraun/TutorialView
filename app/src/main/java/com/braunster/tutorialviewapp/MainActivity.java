@@ -69,8 +69,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         tutorialView.setTutorialText("This is some general text that is not that long but also not so short.");
 
         // Only show the walk through when the activity is first created.
-        if (savedInstanceState == null)
-            startWalkThrough();
+//        if (savedInstanceState == null)
+//            startWalkThrough();
     }
 
     @Override
@@ -199,7 +199,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         overridePendingTransition(R.anim.dummy, R.anim.dummy);
     }
 
-    private void startWalkThrough(){
+    public void startWalkThrough(){
 
         // Running a walk through as the activity is opened, Tutorial
         // building should be wrapped in a runnable that is posted so

@@ -1,8 +1,12 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-TutorialView-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1408)
-##TutorialView
 
+[![Release](https://img.shields.io/github/release/itzikBraun/TutorialView.svg?label=JitPack)](https://jitpack.io/#itzikBraun/TutorialView)
+
+TutorialView
+===============
 [![Join the chat at https://gitter.im/itzikBraun/TutorialView](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/itzikBraun/TutorialView?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+[![Release](https://img.shields.io/github/release/itzikBraun/TutorialView.svg?label=JitPack)](https://jitpack.io/#itzikBraun/TutorialView)
 ![alt tag](http://raw.github.com/ItzikBraun/TutorialView/master/screen_shots/example.gif)
 
 An Android library project providing `Activity` with an explanation about views in your app.
@@ -91,7 +95,17 @@ overridePendingTransition(R.anim.dummy, R.anim.dummy);
 ```
 
 ###INCLUDING IN YOUR PROJECT
-Import the "tutorial_view" module to your project, Then in your build.gradle file add this.(You probably already have the *dependencies* so just add the "*compile project(':tutorial_view')*" ).
+######From Maven Central
+
+Add as a dependency to your build.gradle:
+
+dependencies{
+    compile 'com.github.itzikbraun:TutorialView:0.8.1'
+}
+
+######Downloading the source code
+Import the "tutorial_view" module to your project, 
+Then in your build.gradle file add this.(You probably already have the *dependencies* so just add the "*compile project(':tutorial_view')*" ).
 ```
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
