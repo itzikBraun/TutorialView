@@ -6,7 +6,6 @@ TutorialView
 ===============
 [![Join the chat at https://gitter.im/itzikBraun/TutorialView](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/itzikBraun/TutorialView?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[![Release](https://img.shields.io/github/release/itzikBraun/TutorialView.svg?label=JitPack)](https://jitpack.io/#itzikBraun/TutorialView)
 ![alt tag](http://raw.github.com/ItzikBraun/TutorialView/master/screen_shots/example.gif)
 
 An Android library project providing `Activity` with an explanation about views in your app.
