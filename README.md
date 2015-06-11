@@ -98,9 +98,11 @@ overridePendingTransition(R.anim.dummy, R.anim.dummy);
 
 Add as a dependency to your build.gradle:
 
+````
 dependencies{
     compile 'com.github.itzikbraun:TutorialView:0.8.1'
 }
+````
 
 ######Downloading the source code
 Import the "tutorial_view" module to your project, 
