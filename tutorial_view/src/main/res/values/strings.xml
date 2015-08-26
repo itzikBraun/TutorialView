@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">TutorialView</string>
     <string name="got_it_button_text">Got It</string>
     <string name="skip_button_text">Skip</string>
 </resources>
