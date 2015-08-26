@@ -17,9 +17,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.braunster.tutorialview.TutorialActivity"
-            android:theme="@style/TutorialActivityTheme"/>
-
     </application>
 
 </manifest>
