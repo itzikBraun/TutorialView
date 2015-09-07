@@ -8,6 +8,8 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -154,7 +156,7 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
     }
 
     public interface TutorialClosedListener{
-        public void onClosed();
+        void onClosed();
     }
 
     public abstract void closeTutorial();
@@ -292,8 +294,8 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (isInEditMode())
-            return;
+        /*if (isInEditMode())
+            return;*/
 /*
         // No need to draw if does not have any view to surround,
         // Or the view size is null (in case we do not use a view but only its coordinates).
@@ -342,10 +344,9 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
         // Inflating the "Got It" button.
         mGotItButton = inflate(getContext(), R.layout.got_it_button_view, null);
         ((TextView) mGotItButton).setTextColor(mTutorial.getTutorialTextColor());
-        if (mTutorialTextTypeFace != null)
-        {
-            ((TextView) mGotItButton).setTypeface(mTutorialTextTypeFace);
-        }
+
+
+        setTypeFaceOnTextView(((TextView) mGotItButton));
         
         // Adding skip button if the tutorial is a part of a Walkthrough.
         if (isWalkThrough())
@@ -353,10 +354,8 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
             // Inflating the "Skip" button.
             mSkipButton = inflate(getContext(), R.layout.skip_button_view, null);
             ((TextView) mSkipButton).setTextColor(mTutorial.getTutorialTextColor());
-            if (mTutorialTextTypeFace != null)
-            {
-                ((TextView) mSkipButton).setTypeface(mTutorialTextTypeFace);
-            }
+
+            setTypeFaceOnTextView(((TextView) mSkipButton));
         }
 
         // Inflating the Title for the tutorial if has any. 
@@ -365,11 +364,8 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
             mTitleView = inflate(getContext(), R.layout.title_view, null);
             ((TextView) mTitleView).setTextColor(mTutorial.getTutorialTextColor());
             ((TextView) mTitleView).setText(mTutorial.getTitle());
-            
-            if (mTutorialTextTypeFace != null)
-            {
-                ((TextView) mTitleView).setTypeface(mTutorialTextTypeFace);
-            }
+
+            setTypeFaceOnTextView(((TextView) mTitleView));
         }
 
         mTutorialInfoView.post(tutorialInfoViewPost);
@@ -401,10 +397,7 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
 
             txtTutorial.setTextColor(mTutorial.getTutorialTextColor());
 
-            if (mTutorialTextTypeFace != null)
-            {
-                txtTutorial.setTypeface(mTutorialTextTypeFace);
-            }
+            setTypeFaceOnTextView((txtTutorial));
         }
     }
 
@@ -463,7 +456,10 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
      * Initialize the type face object from the mTutorial object type face name.
      ***/
     protected void initTypeFace (){
-        mTutorialTextTypeFace = Typeface.createFromAsset(getResources().getAssets(), mTutorial.getTutorialTextTypeFace());
+        if (!TextUtils.isEmpty(mTutorial.getTutorialTextTypeFace())){
+            mTutorialTextTypeFace =
+                    Typeface.createFromAsset(getResources().getAssets(), mTutorial.getTutorialTextTypeFace());
+        }
     }
     
     protected void initActionBar(String title){
@@ -1015,4 +1011,10 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
             animation.start();            
         }
     };
+
+    private void setTypeFaceOnTextView(@NonNull TextView textView){
+        if (mTutorialTextTypeFace != null){
+            textView.setTypeface(mTutorialTextTypeFace);
+        }
+    }
 }

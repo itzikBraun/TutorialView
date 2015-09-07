@@ -141,7 +141,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
                 .setInfoText("This is the explanation about the view.")
                 .setBackgroundColor(randomColor())
                 .setTutorialTextColor(Color.WHITE)
-                .setTutorialTextTypeFaceName("fonts/olivier.ttf")
+                .setTutorialTextTypeFaceName("fonts/roboto-light.ttf")
                 .setTutorialTextSize(30)
                 .setAnimationDuration(500);
 

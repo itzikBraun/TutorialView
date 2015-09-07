@@ -17,6 +17,11 @@ allprojects {
     repositories {
         jcenter()
         mavenCentral()
+
+    }
+    // Fix for a conflict with support library that included with espresso
+    configurations.all {
+        resolutionStrategy.force 'com.android.support:support-annotations:23.0.0'
     }
 }
 
