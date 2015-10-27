@@ -909,7 +909,7 @@ public abstract class AbstractTutorialView extends RelativeLayout implements Tut
             // The view to surround is in the top half of the screen so the info will be below it.
             if (isTopHalf)
             {
-                placeInfoAbove();
+                placeInfoBelow();
             }
             // The view to surround is in the bottom half of the screen.
             else {
