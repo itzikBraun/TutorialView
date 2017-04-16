@@ -19,8 +19,8 @@ If you use any kind of analytics to track your user behavior in your app you can
 so when it returns you can collect the data whether the user skipped the tutorials or watched it fully.
 You can also retrieve the amount of tutorials the user have viewed before skipping the walkthrough using `TutorialActivity.VIEWED_TUTORIALS`.
 
-###Usage
-####Tutorial
+### Usage
+#### Tutorial
 The tutorial object holds the tutorial info and attributes. You can create a Tutorial by using the `TutorialBuilder`.
 You can customize the following:
 * Title - Will appear on the top of the view, If the view that is surrounded is on top it will be shown below it.
@@ -40,7 +40,7 @@ TutorialIntentBuilder builder = new TutorialIntentBuilder(MainActivity.this);
 
 builder.changeSystemUiColor(false);
 ```       
-######Example of creating a simple tutorial.
+###### Example of creating a simple tutorial.
 
 ``` java
 TutorialIntentBuilder builder = new TutorialIntentBuilder(MainActivity.this);
@@ -64,7 +64,7 @@ startActivity(builder.getIntent());
 // This will allow the nice wrapping of the view by the tutorial activity.
 overridePendingTransition(R.anim.dummy, R.anim.dummy);
 ```
-######Example of creating a walk through from two Tutorials.
+###### Example of creating a walk through from two Tutorials.
 
 ```java
 ArrayList<Tutorial> tutorials = new ArrayList<>();
@@ -82,7 +82,7 @@ startActivity(builder.getIntent());
 overridePendingTransition(R.anim.dummy, R.anim.dummy);
 ```
 
-####Important!
+#### Important!
 You should override the `Activity` pending transition animation like this, If you wont override it the `TutorialActivity` would animate itself in and will ruin the view animation. (Call it after you call `startActivity(Intent)` ).
 
 
@@ -93,8 +93,8 @@ overridePendingTransition(R.anim.dummy, R.anim.dummy);
 
 ```
 
-###INCLUDING IN YOUR PROJECT
-######From Maven Central
+### INCLUDING IN YOUR PROJECT
+###### From Maven Central
 
 Add as a dependency to your build.gradle:
 
@@ -104,7 +104,7 @@ dependencies{
 }
 ````
 
-######Downloading the source code
+###### Downloading the source code
 Import the "tutorial_view" module to your project, 
 Then in your build.gradle file add this.(You probably already have the *dependencies* so just add the "*compile project(':tutorial_view')*" ).
 ```
@@ -120,14 +120,14 @@ You can also copy past it to your project and before adding it to your dependenc
 include':tutorial_view'
 ```
 
-###TODO:
+### TODO:
 * add the roboto font family to the app assets so it will work on lower versions
 * Make a sample app and publish it on Google Play
 
-###Author
+### Author
 [Itzik Braun - Google+](https://plus.google.com/+ItzikBraunster)
 
-###LICENSE
+### LICENSE
     Copyright (C) 2014  Itzik Braun
 
     This program is free software: you can redistribute it and/or modify
