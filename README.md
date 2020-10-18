@@ -10,12 +10,12 @@ TutorialView
 
 An Android library project providing `Activity` with an explanation about views in your app.
 
-The `TutorialActivity` can be used as a walkthrough for the entire screen that is currently visible, Or just for one view on the screen.
+The `TutorialActivity` can be used as a walkthrough for the entire screen that is currently visible, or just for one view on the screen.
 
-To get the intent to start the `TutorialActivity` you need to use the `TutorialIntentBuilder`,
-The builder will help you build the intent to start the activity, You would have to pass a `Tutorial` object to the intent builder.
+To get the intent to start the `TutorialActivity` you need to use the `TutorialIntentBuilder`.
+The builder will help you to build the intent to start the activity, You would have to pass a `Tutorial` object to the intent builder.
 
-If you use any kind of analytics to track your user behavior in your app you can start the `TutorialActivity` for result and
+If you use any kind of analytics to track your user behavior in your app then you can start the `TutorialActivity` for result,
 so when it returns you can collect the data whether the user skipped the tutorials or watched it fully.
 You can also retrieve the amount of tutorials the user have viewed before skipping the walkthrough using `TutorialActivity.VIEWED_TUTORIALS`.
 
@@ -24,14 +24,14 @@ You can also retrieve the amount of tutorials the user have viewed before skippi
 The tutorial object holds the tutorial info and attributes. You can create a Tutorial by using the `TutorialBuilder`.
 You can customize the following:
 * Title - Will appear on the top of the view, If the view that is surrounded is on top it will be shown below it.
-* TutorialText - The explanation of about the view, It will appear above or below the view.
+* TutorialText - The explanation about the view, It will appear above or below the view.
 * BackgroundColor - The background color of the view.
 * TutorialTextSize - The size that will be used for the tutorial explanation text.
 * TypefaceName - The path to the wanted typeface to use for all text view in the tutorial, Example: "/fonts/arial.ttf".
-* AnimationDuration - the duration time in milliseconds that will be used for the animation.
-* InfoPosition - The position of the info text, This could be Above, Below, LeftOf and Right of all relevant to the view that need to be surrounded. Values are stored in `Tutorial.InfoPosition`
-* GotItPosition - The position of the "GotIt" button, This could be Top(If has a title it will be below it) and Bottom. Values are stored in `Tutorial.GotItPosition`
-* ~~AnimationType - the animation that will be used for showing and hiding the tutorial~~ This is a work in progress currently not working.
+* AnimationDuration - The duration time in milliseconds that will be used for the animation.
+* InfoPosition - The position of the info text, this could be Above, Below, LeftOf and Right of all relevant to the view that need to be surrounded. Values are stored in `Tutorial.InfoPosition`
+* GotItPosition - The position of the "GotIt" button, this could be Top(If has a title it will be below it) and Bottom. Values are stored in `Tutorial.GotItPosition`
+* ~~AnimationType - the animation that will be used for showing and hiding the tutorial~~ This is a work in progress currently not in working state.
 
 Each tutorial that was passed holds it's position on the screen, title, background color, the text explanation and more customizable attributes.
 By default the "StatusBar" and the "NavigationBar" are also being colored on Lollipop devices, You can change the default behavior by using:
@@ -83,7 +83,7 @@ overridePendingTransition(R.anim.dummy, R.anim.dummy);
 ```
 
 #### Important!
-You should override the `Activity` pending transition animation like this, If you wont override it the `TutorialActivity` would animate itself in and will ruin the view animation. (Call it after you call `startActivity(Intent)` ).
+You should override the `Activity` pending transition animation like this, if you wont override it the `TutorialActivity` would animate itself in and will ruin the view animation. (Call it after you call `startActivity(Intent)` ).
 
 
 ``` java
@@ -105,8 +105,8 @@ dependencies{
 ````
 
 ###### Downloading the source code
-Import the "tutorial_view" module to your project, 
-Then in your build.gradle file add this.(You probably already have the *dependencies* so just add the "*compile project(':tutorial_view')*" ).
+Import the "tutorial_view" module to your project. 
+In your build.gradle file add this.(You probably already have the *dependencies* so just add the "*compile project(':tutorial_view')*" ).
 ```
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
